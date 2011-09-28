@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Front Invaders</title>
+	<meta name="author" content="end3r" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<script src="./js/lib/mibbu.js"></script>
+	<script src="./js/game.js"></script>
+	<script src="./js/config.js"></script>
+	<script src="./js/input.js"></script>
+	<script src="./js/utils.js"></script>
+</head>
+<body>
+<div id="container">
+	<div id="game"></div>
+	<p id="statbar">
+		<span id="stat-h">Height: <span id="height">0</span></span>
+		<span id="stat-s">Speed: <span id="speed">0</span></span>
+	</p>
+	<div id="menu">
+		<h1>START</h1>
+		<p>the game</p>
+		<h2>HOW</h2>
+		<p>to play</p>
+		<h3>ABOUT</h3>
+		<p>the game</p>
+	</div>
+	<div id="howTo">
+		<p class="meteor">Watch out for that meteor!</p>
+		<p class="satellite">Don't crash into the satellite!</p>
+		<p class="balloon">Try to avoid hitting the balloons!</p>
+		<p class="bird">Don't hit the bird!</p>
+		<p class="plane">Don't hit the plane!</p>
+		<p class="height">It shows how high you are.</p>
+		<p class="speed">It shows your current speed.</p>
+		<p class="rocket">It's you! Fly as high as you can<br />using keyboard arrows.</p>
+		<span>Back<br />to<br />menu</span>
+	</div>
+	<div id="about">
+		<h2>onSpaceStart</h2>
+		<p>Simple game based on the Mibbu microframework,<br />made to promote <a href="http://ongamestart.com/">onGameStart</a> - first HTML5 game conference.</p>
+		<p><strong>onGameStart</strong> will take place in Warsaw, Poland on 22-23 september 2011.</p>
+		<h3>Info</h3>
+		<p>Take control of the rocket and fly as high as You can.<br />Watch out for the balloons, birds, airplanes, meteors and satellites.</p>
+		<h3>Controls</h3>
+		<p>Use arrow keys to move your rocket. Hit spacebar to pause the game.</p>
+		<h3>Authors</h3>
+		<p><a href="http://end3r.com/">Andrzej Mazur</a> - idea, coding stuff</p>
+		<p><a href="http://mypoint.13k.pl/">Ewa Adach</a> - graphics</p>
+		<h3>Credits</h3>
+		<p><a href="http://michalbe.blogspot.com/">Michał Budzyński</a> - author of the Mibbu microframework<br />and onGameStart website graphics (used in the game)</p>
+		<span>Back<br />to<br />menu</span>
+	</div>
+	<div id="message"></div>
+	<script>
+		var GAME_WIDTH = 700, GAME_HEIGHT = 500;
+		var Mibbu = new mibbu(GAME_WIDTH, GAME_HEIGHT, 'game');
+		GAME.Init();
+	</script>
+</div>
+</body>
+</html>
