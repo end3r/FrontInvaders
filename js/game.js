@@ -71,6 +71,15 @@ GAME.Start = function(preload) {
 
 	GAME.BULLETS = [];
 	GAME.ENEMIES = [];
+	GAME.frameCount = 0;
+	GAME.enemyDirX = 0.7;
+	GAME.enemyDirY = 0;
+	GAME.enemyWidth = 30;
+	
+	GAME.player = player;
+	GAME.player.level = 1;
+	GAME.player.lifes = 3;
+	GAME.player.points = 0;
 
 	for(var b = 0; b < GAME.Config.bulletLimit; b++) {
 		GAME.BULLETS.push(GAME.Utils.NewBullet(player));
@@ -78,11 +87,12 @@ GAME.Start = function(preload) {
 	
 	GAME.Config.enemyCount = GAME.Config.enemyHeight*GAME.Config.enemyWidth;
 	var diff = parseInt((background.width-(GAME.Config.enemyWidth*(enemy_width+10)))/2),
-		enemyCounter = 0;
+		enemyCounter = 0,
+		panel = 25;
 	for(var i = 0; i < GAME.Config.enemyHeight; i++) {
 		for(var j = 0; j < GAME.Config.enemyWidth; j++) {
 			var posX = j*(enemy_width+10)+diff,
-				posY = i*(enemy_height+10);
+				posY = i*(enemy_height+10)+panel;
 			GAME.ENEMIES[enemyCounter] = GAME.Utils.NewEnemy(posX, posY);
 			enemyCounter++;
 		}
@@ -92,6 +102,7 @@ GAME.Start = function(preload) {
 	Mibbu.on();
 	
 	var gameLoop = function(){
+		GAME.frameCount++;
 		GAME.keyboard.frame(player,background);
 
 		var actSpeed = background.speed(),
@@ -114,23 +125,28 @@ GAME.Start = function(preload) {
 		GAME.Config.height = actHeight;
 
 		/* ENEMY MOVEMENT */
-		var enemies_direction_x = 1,
-			enemies_direction_y = 0;
-		
+		/*if(!(GAME.frameCount%100)) { GAME.enemyDirY += 5; console.log('fC'); }*/
+		//if(!(GAME.frameCount % 10)){
+
+		var offScreenRight = false,
+			offScreenLeft = false;
 		for(var i = 0; i < GAME.Config.enemyCount; i++) {
-			if(GAME.ENEMIES[i].position().x > background.width) {
-				enemies_direction_x = -1;
-				break;
+			if(GAME.ENEMIES[i].position().x > background.width-2*GAME.enemyWidth) {
+				offScreenRight = true;
 			}
-			else if(GAME.ENEMIES[i].position().x < 0) {
-				enemies_direction_x = 1;
-				break;
+			if(GAME.ENEMIES[i].position().x < GAME.enemyWidth) {
+				offScreenLeft = true;
 			}
 		}
-		
-		for(var i = 0; i < GAME.Config.enemyCount; i++) {
-			GAME.ENEMIES[i].position(GAME.ENEMIES[i].position().x += enemies_direction_x, GAME.ENEMIES[i].position().y += enemies_direction_y);
+		if(offScreenLeft || offScreenRight) {
+			GAME.enemyDirX = -GAME.enemyDirX;
+			GAME.enemyDirY += 10;
 		}
+			
+		for(var i = 0; i < GAME.Config.enemyCount; i++) {
+			GAME.ENEMIES[i].position(GAME.ENEMIES[i].position().x += GAME.enemyDirX, GAME.ENEMIES[i].position().y += GAME.enemyDirY);
+		}
+		GAME.enemyDirY = 0;
 	}
 	Mibbu.hook(gameLoop);
 };

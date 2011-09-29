@@ -69,3 +69,15 @@ GAME.Utils.LinkBackToMenu = function(id) {
 GAME.Utils.PlusMinus = function() {
 	return (~~(Math.random()*2)*2)-1;
 };
+
+/* Collision Detection */
+GAME.collisionDetection = {
+	GAME.collisionDetection.table = [];
+};
+GAME.collisionDetection.add = function(obj1, obj2, callback) {
+	// add obj2 to obj1, and then fire callback if collide
+};
+// check only the elements that have moved?
+GAME.collisionDetection.checkAll = function() {
+	//
+};
