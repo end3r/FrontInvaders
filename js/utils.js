@@ -46,10 +46,10 @@ GAME.Utils.NewBullet = function(player) {
 	return newBullet;
 };
 
-GAME.Utils.NewEnemy = function(posX, posY) {
-	var newEnemy = new Mibbu.spr('img/enemies.png', 30, 40, 0, 0);
-	newEnemy.animation(0);
-	newEnemy.position(posX, posY, 2).speed(0);
+GAME.Utils.NewEnemy = function(posX, posY, type) {
+	var newEnemy = new Mibbu.spr('img/enemies.png', 20, 20, 1, 2);
+	newEnemy.animation(type);
+	newEnemy.position(posX, posY, 2).speed(30);
 	newEnemy.movement = 0;
 	return newEnemy;
 };
@@ -71,7 +71,7 @@ GAME.Utils.PlusMinus = function() {
 };
 
 /* Collision Detection */
-GAME.collisionDetection = {
+GAME.collisionDetection = function() {
 	GAME.collisionDetection.table = [];
 };
 GAME.collisionDetection.add = function(obj1, obj2, callback) {
