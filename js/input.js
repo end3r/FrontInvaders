@@ -116,13 +116,13 @@ GAME.Input.prototype = {
 			}
 			if(this.pressed.shoot) {
 				this.pressed.shoot = false;
-				if(GAME.ACTIVE_BULLETS < GAME.Config.bulletLimit) {
-					GAME.BULLETS[GAME.ACTIVE_BULLETS].position(player.position().x+(player.width/2)-1, player.position().y);
-					for(var b = 0; b < GAME.Config.enemyCount; b++) {
-						GAME.BULLETS[GAME.ACTIVE_BULLETS].hit(GAME.ENEMIES[0], function() { GAME.Utils.GameOver('player'); });
-					}
-					GAME.ACTIVE_BULLETS += 1;
-					console.log('SHOOT!');
+				if(GAME.BULLETS.length < GAME.Config.bulletLimit) {
+					//GAME.BULLETS[GAME.ACTIVE_BULLETS].position(player.position().x+(player.width/2)-1, player.position().y);
+					//for(var b = 0; b < GAME.Config.enemyCount; b++) {
+					//	GAME.BULLETS[GAME.ACTIVE_BULLETS].hit(GAME.ENEMIES[0], function() { GAME.Utils.GameOver('player'); });
+					//}
+					GAME.BULLETS.push(GAME.Utils.NewBullet(player));
+					//GAME.ACTIVE_BULLETS += 1;
 				}
 			}
 		}

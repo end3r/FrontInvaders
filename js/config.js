@@ -16,6 +16,7 @@ GAME.Config = {
 	bulletLimit: 5,
 	enemyWidth: 10,
 	enemyHeight: 3,
+	uniqueID: 0,
 	
 	msg: {
 		pausedTitle: "<h2>PAUSED</h2>",
