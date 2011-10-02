@@ -55,7 +55,7 @@ GAME.hitObj = function(){ console.log('HIT!'); }
 
 GAME.Utils.NewEnemy = function(posX, posY, type) {
 	var newEnemy = new Mibbu.spr('img/enemies.png', 30, 30, 1, 2);
-	newEnemy.animation(type);
+	newEnemy.animation(type%3);
 	newEnemy.position(posX, posY, 2).speed(30);
 	newEnemy.movement = 0;
 	newEnemy.width = 30;
@@ -86,28 +86,13 @@ GAME.collisionDetection = function() {};
 GAME.collisionDetection.table = [];
 
 GAME.collisionDetection.add = function(obj1, obj2, callback) {
-	//GAME.collisionDetection.table = [] || GAME.collisionDetection.table;
-	// add obj2 to obj1, and then fire callback if collide
-		//GAME.collisionDetection.table[obj1.__id] = [] || GAME.collisionDetection.table[obj1.__id];
-		//GAME.collisionDetection.table[obj1.__id].push(obj2);
 	GAME.collisionDetection.table.push({obj1:obj1, obj2:obj2, fn:callback});
-	//console.log('pushed');
-	//console.dir(GAME.collisionDetection.table);
 };
 
 GAME.collisionDetection.checkAll = function() {
-//	for(var i=0; i<GAME.collisionDetection.table.length; i++) {
-//		for(var j=0; j<GAME.collisionDetection.table[i].length; i++) {
-//			// j
-//		}
-//	}
 	var t = GAME.collisionDetection.table;
 	if(t && t.length) {
 		for (var i=0; i<t.length; i++) {
-			//console.dir(t[i]);
-			//console.log(JSON.stringify(t[i]));
-			//console.log('t.length: '+t.length+', check '+i+' interactions');
-			//var obj1 = t[i].obj1;
 			var obj1 = t[i].obj1,
 				obj2 = t[i].obj2,
 				fn = t[i].fn;
@@ -119,26 +104,38 @@ GAME.collisionDetection.checkAll = function() {
 				o2_Bottom = obj2.top+obj2.height,
 				o2_Left = obj2.left,
 				o2_Right = obj2.left+obj2.width;
-			
-		//	if (!( (o1_Top > o2_Bottom) || (o1_Bottom < o2_Top) || (o1_Left > o2_Right) || (o1_Right < o2_Left) )) {
-				//console.dir(MB_collides[loopIndex].hits)
-				//MB_collides[loopIndex].hits[element]();
-		//		console.log('HIIIIIT!');
-		//	}
-			if( o1_Top < o2_Top && o2_Top < o1_Bottom )
-				console.log('UGH!');
-		}
 
-		/*
-		for (var i=0, j=0; i<t.length; i++)
-		{
-			console.log(t.length);
-			while(!t[j]) j++;
-			var item = t[j];
-			//console.log('item '+i+' with id '+j);
-			console.dir(item);
-			sleep(50000);
-		}*/
-		//console.log('checking '+GAME.collisionDetection.table.length+' elements vs '+GAME.collisionDetection.table[0]+' elements.');
+			if( !( (o1_Top <= o2_Top) || (o1_Bottom >= o2_Bottom) || (o1_Left <= o2_Left) || (o1_Right >= o2_Right) ) ) {
+				for(var i=0; i<GAME.BULLETS.length; i++) {
+					if(GAME.BULLETS[i].__id == obj1.__id) {
+						GAME.BULLETS[i].top = -50;
+						//GAME.BULLETS[i].left = -50;
+						GAME.BULLETS[i].position(200,-50);
+						GAME.BULLETS.splice(i,1);
+					}
+				}
+				var enemyTab = [];
+				for(var i=0; i<GAME.ENEMIES.length; i++) {
+					if(GAME.ENEMIES[i].__id == obj2.__id) {
+						var enemy = GAME.ENEMIES[i];
+						//var enemy_id = i;
+						enemy.change('img/explosion.png', 30, 30, 0, 3).speed(5).animation(0).frame(-1).zone(30,30,0,0);
+						GAME.player.points += GAME.Config.pointsDiff;
+						console.log('Nr of enemies: '+GAME.ENEMIES.length);
+						enemy.callback(function(){
+							enemy.top = -enemy.height;
+							enemy.position(enemy.position().x,enemy.top);
+							//GAME.ENEMIES.splice(enemy_id,1);
+							console.log('num of enemies: '+GAME.ENEMIES.length);
+							enemy.callback(function(){},1000);
+						}, 1);
+					}
+					else {
+						enemyTab.push(GAME.ENEMIES[i]);
+					}
+				}
+				GAME.ENEMIES = enemyTab;
+			}
+		}
 	}
 };

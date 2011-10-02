@@ -14,9 +14,11 @@ GAME.Config = {
 	moveInterval: 3,
 	bulletSpeed: 3,
 	bulletLimit: 5,
-	enemyWidth: 10,
-	enemyHeight: 3,
+	//bulletLag: 5,
+	enemyWidth: 12,
+	enemyHeight: 5,
 	uniqueID: 0,
+	pointsDiff: 100,
 	
 	msg: {
 		pausedTitle: "<h2>PAUSED</h2>",
