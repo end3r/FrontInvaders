@@ -43,15 +43,15 @@ GAME.Utils.NewBullet = function(player) {
 	newBullet.left = posX;
 	newBullet.top = posY;
 	newBullet.position(posX, posY, 2).speed(0);
-	newBullet.__id = GAME.Config.uniqueID++;
-	console.log('new bullet ID: '+newBullet.__id);
+	//console.log('new bullet ID: '+newBullet.id());
 	for(var e=0; e<GAME.ENEMIES.length; e++) {
 		GAME.collisionDetection.add(newBullet, GAME.ENEMIES[e], GAME.hitObj );
 	}
+	GAME.player.points -= 10;
 	return newBullet;
 };
 
-GAME.hitObj = function(){ console.log('HIT!'); }
+//GAME.hitObj = function(){ console.log('HIT!'); }
 
 GAME.Utils.NewEnemy = function(posX, posY, type) {
 	var newEnemy = new Mibbu.spr('img/enemies.png', 30, 30, 1, 2);
@@ -64,13 +64,7 @@ GAME.Utils.NewEnemy = function(posX, posY, type) {
 	newEnemy.top = posY;
 	return newEnemy;
 };
-/*
-GAME.Utils.UpdateItem = function(item) {
-	item.position(item.posX, item.posY, 2).speed(1);
-	item.movement = 0;
-	return item;
-};
-*/
+
 GAME.Utils.LinkBackToMenu = function(id) {
 	GAME._id(id).onclick = function() {
 		GAME._id(id).style.zIndex = '5';
@@ -81,14 +75,34 @@ GAME.Utils.PlusMinus = function() {
 	return (~~(Math.random()*2)*2)-1;
 };
 
+GAME.Utils.newLevel = function() {
+	var enemy_width = 30, enemy_height = 30;
+	var diff = parseInt((GAME.background.width-(GAME.Config.enemyWidth*(enemy_width+10)))/2),
+		enemyCounter = 0,
+		panel = 70;
+
+	GAME.player.position(~~((GAME.background.width-GAME.player.width)/2), GAME.background.height-GAME.player.height-15, 5).speed(0);
+	GAME.BULLETS = [];
+	GAME.ENEMIES = [];
+	GAME.Config.enemyHeight = GAME.player.level;
+
+	for(var i = 0; i < GAME.Config.enemyHeight; i++) {
+		for(var j = 0; j < GAME.Config.enemyWidth; j++) {
+			var posX = j*(enemy_width+10)+diff,
+				posY = i*(enemy_height+10)+panel;
+			GAME.ENEMIES[enemyCounter] = GAME.Utils.NewEnemy(posX, posY, i);
+			enemyCounter++;
+		}
+	}
+};
+
 /* Collision Detection */
 GAME.collisionDetection = function() {};
 GAME.collisionDetection.table = [];
 
-GAME.collisionDetection.add = function(obj1, obj2, callback) {
-	GAME.collisionDetection.table.push({obj1:obj1, obj2:obj2, fn:callback});
+GAME.collisionDetection.add = function(obj1, obj2) {
+	GAME.collisionDetection.table.push({obj1:obj1, obj2:obj2});
 };
-
 GAME.collisionDetection.checkAll = function() {
 	var t = GAME.collisionDetection.table;
 	if(t && t.length) {
@@ -107,7 +121,7 @@ GAME.collisionDetection.checkAll = function() {
 
 			if( !( (o1_Top <= o2_Top) || (o1_Bottom >= o2_Bottom) || (o1_Left <= o2_Left) || (o1_Right >= o2_Right) ) ) {
 				for(var i=0; i<GAME.BULLETS.length; i++) {
-					if(GAME.BULLETS[i].__id == obj1.__id) {
+					if(GAME.BULLETS[i].id() == obj1.id()) {
 						GAME.BULLETS[i].top = -50;
 						//GAME.BULLETS[i].left = -50;
 						GAME.BULLETS[i].position(200,-50);
@@ -116,18 +130,31 @@ GAME.collisionDetection.checkAll = function() {
 				}
 				var enemyTab = [];
 				for(var i=0; i<GAME.ENEMIES.length; i++) {
-					if(GAME.ENEMIES[i].__id == obj2.__id) {
+					if(GAME.ENEMIES[i].id() == obj2.id()) {
 						var enemy = GAME.ENEMIES[i];
 						//var enemy_id = i;
 						enemy.change('img/explosion.png', 30, 30, 0, 3).speed(5).animation(0).frame(-1).zone(30,30,0,0);
 						GAME.player.points += GAME.Config.pointsDiff;
-						console.log('Nr of enemies: '+GAME.ENEMIES.length);
 						enemy.callback(function(){
 							enemy.top = -enemy.height;
 							enemy.position(enemy.position().x,enemy.top);
 							//GAME.ENEMIES.splice(enemy_id,1);
-							console.log('num of enemies: '+GAME.ENEMIES.length);
+							//console.log('Number of enemies: '+GAME.ENEMIES.length);
 							enemy.callback(function(){},1000);
+							if(!GAME.ENEMIES.length) {
+								//alert('Game over!');
+								GAME.player.level += 1;
+								GAME.Utils.newLevel();
+								var unlock = '';
+								if(GAME.player.level == 5) {
+									unlock = "You've reached level 5 and unlocked new rocket!";
+									var anim = GAME.player.animation();
+									GAME.player.animation((anim += 1) % 2);
+								}
+								GAME.Utils.Alert(GAME.Config.msg.nextLevelTitle, GAME.Config.msg.nextLevelText+unlock);
+								GAME.Config.active = false;
+								Mibbu.off();
+							}
 						}, 1);
 					}
 					else {

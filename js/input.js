@@ -10,6 +10,7 @@ GAME.Input = function(){
 			case GAME.Config.input.SHOOT:
 			case GAME.Config.input.PAUSE:
 			case GAME.Config.input.START:
+			case GAME.Config.input.CHANGE:
 			    return false;
 		}
 	};
@@ -19,21 +20,7 @@ GAME.Input.prototype = {
 	held: {},
 	pressed: {},
 	keydown: function(e) {
-		switch (e.keyCode) {/*
-			case GAME.Config.input.UP: {
-				this.pressed.up = true;
-				this.pressed.down = false;
-				this.held.up = true;
-				this.held.down = false;
-				break;
-			}
-			case GAME.Config.input.DOWN: {
-				this.pressed.down = true;
-				this.pressed.up = false;
-				this.held.down = true;
-				this.held.up = false;
-				break;
-			}*/
+		switch (e.keyCode) {
 			case GAME.Config.input.LEFT: {
 				this.pressed.left = true;
 				this.pressed.right = false;
@@ -64,8 +51,8 @@ GAME.Input.prototype = {
 			}
 			case GAME.Config.input.SHOOT: {
 				if(GAME.Config.active) {
-					// SHOOT
 					this.pressed.shoot = true;
+					//this.held.shoot = true;
 				}
 				break;
 			}
@@ -74,20 +61,17 @@ GAME.Input.prototype = {
 					GAME._tag('h1', GAME._id('menu')).onclick();
 				break;
 			}
+			case GAME.Config.input.CHANGE: {
+				var anim = GAME.player.animation();
+				GAME.player.animation((anim += 1) % 2); 
+				break;
+			}
 			default: { return; }
 		}
 		return false;
 	},
 	keyup: function(e) {
-		switch (e.keyCode) {/*
-			case GAME.Config.input.UP: {
-				this.held.up = false;
-				break;
-			}
-			case GAME.Config.input.DOWN: {
-				this.held.down = false;
-				break;
-			}*/
+		switch (e.keyCode) {
 			case GAME.Config.input.LEFT: {
 				this.held.left = false;
 				break;
@@ -95,20 +79,18 @@ GAME.Input.prototype = {
 			case GAME.Config.input.RIGHT: {
 				this.held.right = false;
 				break;
-			}
+			}/*
+			case GAME.Config.input.SHOOT: {
+				this.held.shoot = false;
+				break;
+			}*/
 			default: { return; }
 		}
 		return false;
 	},
 	frame: function(player) {
-		if (GAME.Config.active) {/*
-			if (this.pressed.up || this.held.up) {
-				player.position(player.position().x, player.position().y -= 2);
-			}
-			if (this.pressed.down || this.held.down) {
-				player.position(player.position().x, player.position().y += 2);
-			}*/
-			if ( (this.pressed.left || this.held.left)) {
+		if (GAME.Config.active) {
+			if (this.pressed.left || this.held.left) {
 				player.position(player.position().x -= GAME.Config.moveInterval, player.position().y);
 			}
 			if (this.pressed.right || this.held.right) {
@@ -117,12 +99,7 @@ GAME.Input.prototype = {
 			if(this.pressed.shoot) {
 				this.pressed.shoot = false;
 				if(GAME.BULLETS.length < GAME.Config.bulletLimit) {
-					//GAME.BULLETS[GAME.ACTIVE_BULLETS].position(player.position().x+(player.width/2)-1, player.position().y);
-					//for(var b = 0; b < GAME.Config.enemyCount; b++) {
-					//	GAME.BULLETS[GAME.ACTIVE_BULLETS].hit(GAME.ENEMIES[0], function() { GAME.Utils.GameOver('player'); });
-					//}
 					GAME.BULLETS.push(GAME.Utils.NewBullet(player));
-					//GAME.ACTIVE_BULLETS += 1;
 				}
 			}
 		}

@@ -58,40 +58,24 @@ GAME.Start = function(preload) {
 	background.speed(0).dir(90).on();
 	background.width = GAME_WIDTH;
 	background.height = GAME_HEIGHT;
+	GAME.background = background;
 
 	player.width = 40;
 	player.height = 40;
-	player.position(~~((background.width-player.width)/2), background.height-player.height-15, 5).speed(0);
 
-	GAME.BULLETS = [];
-	GAME.ENEMIES = [];
 	GAME.frameCount = 0;
 	GAME.enemyDirX = 7;
 	GAME.enemyDirY = 0;
 	GAME.enemyWidth = 30;
 	
 	GAME.player = player;
-	GAME.player.level = 1;
 	GAME.player.lives = 3;
 	GAME.player.points = 0;
-	GAME.player.__id = GAME.Config.uniqueID++;
+	GAME.player.level = 1;
 	
-	GAME.Config.enemyHeight = GAME.player.level;
-	//GAME.Config.enemyCount = GAME.Config.enemyHeight*GAME.Config.enemyWidth;
-	var diff = parseInt((background.width-(GAME.Config.enemyWidth*(enemy_width+10)))/2),
-		enemyCounter = 0,
-		panel = 50;
-	for(var i = 0; i < GAME.Config.enemyHeight; i++) {
-		for(var j = 0; j < GAME.Config.enemyWidth; j++) {
-			var posX = j*(enemy_width+10)+diff,
-				posY = i*(enemy_height+10)+panel;
-			GAME.ENEMIES[enemyCounter] = GAME.Utils.NewEnemy(posX, posY, i);
-			GAME.ENEMIES[enemyCounter].__id = GAME.Config.uniqueID++;
-			//GAME.collisionDetection.add(GAME.player, GAME.ENEMIES[enemyCounter]);
-			enemyCounter++;
-		}
-	}
-	
+	// new level
+	GAME.Utils.newLevel();
+
 	GAME.Config.active = true;
 	Mibbu.on();
 	
@@ -108,7 +92,7 @@ GAME.Start = function(preload) {
 				var newY = GAME.BULLETS[b].position().y -= GAME.Config.bulletSpeed;
 				if(newY <= 0) {
 					GAME.BULLETS.splice(b,1);
-					console.log('bullet removed, len = '+GAME.BULLETS.length);
+					//console.log('bullet removed, len = '+GAME.BULLETS.length);
 				}
 				else {
 					GAME.BULLETS[b].top = newY;
@@ -118,8 +102,7 @@ GAME.Start = function(preload) {
 		}
 
 		/* ENEMY MOVEMENT */
-		/*if(!(GAME.frameCount%100)) { GAME.enemyDirY += 5; console.log('fC'); }*/
-		if(!(GAME.frameCount % 30)){
+		if(!(GAME.frameCount % (30-4*(GAME.player.level-1)))){
 			var offScreenRight = false,
 				offScreenLeft = false;
 			for(var i = 0; i < GAME.ENEMIES.length; i++) {
@@ -134,16 +117,13 @@ GAME.Start = function(preload) {
 				GAME.enemyDirX = -GAME.enemyDirX;
 				GAME.enemyDirY += 15;
 			}
-			//console.log('DirY_1: '+GAME.enemyDirY);
 			for(var i = 0; i < GAME.ENEMIES.length; i++) {
 				GAME.ENEMIES[i].position(GAME.ENEMIES[i].position().x += GAME.enemyDirX, GAME.ENEMIES[i].position().y += GAME.enemyDirY);
 				GAME.ENEMIES[i].left += GAME.enemyDirX;
 				GAME.ENEMIES[i].top += GAME.enemyDirY;
 			}
 			GAME.enemyDirY = 0;
-			//console.log('DirY_2: '+GAME.enemyDirY);
 		}
-		//GAME.collisionDetection.checkAll();
 	}
 	Mibbu.hook(gameLoop);
 	Mibbu.hook(GAME.collisionDetection.checkAll);
