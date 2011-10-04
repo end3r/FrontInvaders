@@ -42,6 +42,7 @@ GAME.Utils.NewBullet = function() {
 	newBullet.height = 4;
 	newBullet.left = posX;
 	newBullet.top = posY;
+	newBullet.hit = true;
 	newBullet.position(posX, posY, 2).speed(0);
 	for(var e=0; e<GAME.ENEMIES.length; e++) {
 		GAME.CollisionDetection.Add(newBullet, GAME.ENEMIES[e]);
@@ -55,6 +56,8 @@ GAME.Utils.NewEnemy = function(posX, posY, type) {
 	newEnemy.animation(type%3);
 	newEnemy.position(posX, posY, 2).speed(30);
 	newEnemy.movement = 0;
+	//newEnemy.hit = (type%2) ? true : false;
+	newEnemy.hit = true;
 	newEnemy.width = GAME.enemy.width;
 	newEnemy.height = GAME.enemy.height;
 	newEnemy.left = posX;
@@ -116,11 +119,10 @@ GAME.CollisionDetection.CheckAll = function() {
 				o2_Right = obj2.left+obj2.width;
 
 			if( !( (o1_Top <= o2_Top) || (o1_Bottom >= o2_Bottom)
-				|| (o1_Left <= o2_Left) || (o1_Right >= o2_Right) ) ) {
+				|| (o1_Left <= o2_Left) || (o1_Right >= o2_Right) ) && obj1.hit && obj2.hit ) {
 				for(var i=0; i<GAME.BULLETS.length; i++) {
 					if(GAME.BULLETS[i].id() == obj1.id()) {
 						GAME.BULLETS[i].top = -50;
-						//GAME.BULLETS[i].left = -50;
 						GAME.BULLETS[i].position(200,-50);
 						GAME.BULLETS.splice(i,1);
 					}
@@ -137,7 +139,7 @@ GAME.CollisionDetection.CheckAll = function() {
 							enemy.position(enemy.position().x,enemy.top);
 							enemy.callback(function(){},1000);
 							if(!GAME.ENEMIES.length) {
-								GAME.player.level += 1;
+								GAME.state.level += 1;
 								GAME.Utils.NewLevel();
 								var unlock = '';
 								if(GAME.player.level == 5) {

@@ -68,12 +68,13 @@ GAME.Start = function(preload) {
 
 	GAME.state = {};
 	GAME.state.frameCount = 0;
-	GAME.state.level = 2;
+	GAME.state.level = 1;
 	GAME.state.points = 0;
-	GAME.state.borderTop = 70;
-	GAME.state.borderBottom = 0;
+	GAME.state.borderTop = 80;
+	GAME.state.borderBottom = 15;
 
 	GAME.player.lives = 3;
+	GAME.player.hit = true;
 
 	GAME.Utils.NewLevel();
 	GAME.Config.active = true;
@@ -90,7 +91,7 @@ GAME.Start = function(preload) {
 		if(GAME.BULLETS.length) {
 			for(var b=0; b<GAME.BULLETS.length; b++) {
 				var newY = GAME.BULLETS[b].position().y - GAME.Config.bulletSpeed;
-				if(newY <= 0) {
+				if(newY <= 40) {
 					GAME.BULLETS.splice(b,1);
 				}
 				else {

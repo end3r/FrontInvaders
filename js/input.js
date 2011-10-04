@@ -92,9 +92,15 @@ GAME.Input.prototype = {
 		if (GAME.Config.active) {
 			if (this.pressed.left || this.held.left) {
 				GAME.player.position(GAME.player.position().x -= GAME.Config.moveInterval, GAME.player.position().y);
+				if(GAME.player.position().x <= 0) {
+					GAME.player.position(1, GAME.player.position().y);
+				}
 			}
 			if (this.pressed.right || this.held.right) {
 				GAME.player.position(GAME.player.position().x += GAME.Config.moveInterval, GAME.player.position().y);
+				if(GAME.player.position().x > GAME.background.width-GAME.player.width-1) {
+					GAME.player.position(GAME.background.width-GAME.player.width-1, GAME.player.position().y);
+				}
 			}
 			if(this.pressed.shoot) {
 				this.pressed.shoot = false;
