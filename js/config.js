@@ -25,6 +25,8 @@ GAME.Config = {
 		pausedText: "<p>Press spacebar again to get back to the game.</p><p>Or go to the <a href=''>main menu</a>?</p>",
 		nextLevelTitle: "<h2>Next level!</h2>",
 		nextLevelText: "<p>Congratulations, You killed all of the al_IE_ns and reached next level!</p><p>Press spacebar to continue!</p>",
+		repeatLevelTitle: "<h2>Oh noes!</h2>",
+		repeatLevelText: "<p>You were killed by the al_IE_ns!</p><p>Press spacebar to continue!</p>",
 		congratulations: "<p>Congratulations, you've reached <span>#</span> metres!</p>",
 		gameOver: "<h1>GAME OVER!</h1>",
 		tryAgain: "<p><a href=''>Try again?</a></p>"

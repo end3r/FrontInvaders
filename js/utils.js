@@ -1,10 +1,10 @@
 GAME.Utils = {};
 
-GAME._id = function(id) { return document.getElementById(id); };
-GAME._tag = function(tag, container) { return (container || document).getElementsByTagName(tag)[0]; };
+GAME.$id = function(id) { return document.getElementById(id); };
+GAME.$tag = function(tag, container) { return (container || document).getElementsByTagName(tag)[0]; };
 
 GAME.Utils.Alert = function(title, message) {
-	var div = GAME._id('message');
+	var div = GAME.$id('message');
 	if(title) { // show
 		div.style.zIndex = '20';
 		div.innerHTML = '<div class="box">'+title+message+'</div><div class="shadow"></div>';
@@ -34,62 +34,58 @@ GAME.Utils.GameOver = function(what) {
 	GAME.Utils.Alert(GAME.Config.msg.gameOver, msg+GAME.Config.msg.tryAgain);
 };
 
-GAME.Utils.NewBullet = function(player) {
-	var posX = player.position().x + parseInt(player.width/2)-1,
-		posY = player.position().y;
+GAME.Utils.NewBullet = function() {
+	var posX = GAME.player.position().x + parseInt(GAME.player.width/2)-1,
+		posY = GAME.player.position().y;
 	var newBullet = new Mibbu.spr('img/bullet.png', 2, 4, 0, 0);
 	newBullet.width = 2;
 	newBullet.height = 4;
 	newBullet.left = posX;
 	newBullet.top = posY;
 	newBullet.position(posX, posY, 2).speed(0);
-	//console.log('new bullet ID: '+newBullet.id());
 	for(var e=0; e<GAME.ENEMIES.length; e++) {
-		GAME.collisionDetection.add(newBullet, GAME.ENEMIES[e], GAME.hitObj );
+		GAME.CollisionDetection.Add(newBullet, GAME.ENEMIES[e]);
 	}
-	GAME.player.points -= 10;
+	GAME.state.points -= 10;
 	return newBullet;
 };
 
-//GAME.hitObj = function(){ console.log('HIT!'); }
-
 GAME.Utils.NewEnemy = function(posX, posY, type) {
-	var newEnemy = new Mibbu.spr('img/enemies.png', 30, 30, 1, 2);
+	var newEnemy = new Mibbu.spr('img/enemies.png', GAME.enemy.width, GAME.enemy.height, 1, 2);
 	newEnemy.animation(type%3);
 	newEnemy.position(posX, posY, 2).speed(30);
 	newEnemy.movement = 0;
-	newEnemy.width = 30;
-	newEnemy.height = 30;
+	newEnemy.width = GAME.enemy.width;
+	newEnemy.height = GAME.enemy.height;
 	newEnemy.left = posX;
 	newEnemy.top = posY;
 	return newEnemy;
 };
 
 GAME.Utils.LinkBackToMenu = function(id) {
-	GAME._id(id).onclick = function() {
-		GAME._id(id).style.zIndex = '5';
+	GAME.$id(id).onclick = function() {
+		GAME.$id(id).style.zIndex = '5';
 	};
 };
-
+/*
 GAME.Utils.PlusMinus = function() {
 	return (~~(Math.random()*2)*2)-1;
 };
+*/
+GAME.Utils.NewLevel = function() {
+	var diff = parseInt((GAME.background.width-(GAME.Config.enemyWidth*(GAME.enemy.width+10)))/2),
+		enemyCounter = 0;
 
-GAME.Utils.newLevel = function() {
-	var enemy_width = 30, enemy_height = 30;
-	var diff = parseInt((GAME.background.width-(GAME.Config.enemyWidth*(enemy_width+10)))/2),
-		enemyCounter = 0,
-		panel = 70;
-
-	GAME.player.position(~~((GAME.background.width-GAME.player.width)/2), GAME.background.height-GAME.player.height-15, 5).speed(0);
+	GAME.player.position(~~((GAME.background.width-GAME.player.width)/2),
+		GAME.background.height-GAME.player.height-GAME.state.borderBottom, 5).speed(0);
 	GAME.BULLETS = [];
 	GAME.ENEMIES = [];
-	GAME.Config.enemyHeight = GAME.player.level;
+	GAME.Config.enemyHeight = GAME.state.level;
 
 	for(var i = 0; i < GAME.Config.enemyHeight; i++) {
 		for(var j = 0; j < GAME.Config.enemyWidth; j++) {
-			var posX = j*(enemy_width+10)+diff,
-				posY = i*(enemy_height+10)+panel;
+			var posX = j*(GAME.enemy.width+10)+diff,
+				posY = i*(GAME.enemy.height+10)+GAME.state.borderTop;
 			GAME.ENEMIES[enemyCounter] = GAME.Utils.NewEnemy(posX, posY, i);
 			enemyCounter++;
 		}
@@ -97,14 +93,14 @@ GAME.Utils.newLevel = function() {
 };
 
 /* Collision Detection */
-GAME.collisionDetection = function() {};
-GAME.collisionDetection.table = [];
+GAME.CollisionDetection = function() {};
+GAME.CollisionDetection.table = [];
 
-GAME.collisionDetection.add = function(obj1, obj2) {
-	GAME.collisionDetection.table.push({obj1:obj1, obj2:obj2});
+GAME.CollisionDetection.Add = function(obj1, obj2) {
+	GAME.CollisionDetection.table.push({obj1:obj1, obj2:obj2});
 };
-GAME.collisionDetection.checkAll = function() {
-	var t = GAME.collisionDetection.table;
+GAME.CollisionDetection.CheckAll = function() {
+	var t = GAME.CollisionDetection.table;
 	if(t && t.length) {
 		for (var i=0; i<t.length; i++) {
 			var obj1 = t[i].obj1,
@@ -119,7 +115,8 @@ GAME.collisionDetection.checkAll = function() {
 				o2_Left = obj2.left,
 				o2_Right = obj2.left+obj2.width;
 
-			if( !( (o1_Top <= o2_Top) || (o1_Bottom >= o2_Bottom) || (o1_Left <= o2_Left) || (o1_Right >= o2_Right) ) ) {
+			if( !( (o1_Top <= o2_Top) || (o1_Bottom >= o2_Bottom)
+				|| (o1_Left <= o2_Left) || (o1_Right >= o2_Right) ) ) {
 				for(var i=0; i<GAME.BULLETS.length; i++) {
 					if(GAME.BULLETS[i].id() == obj1.id()) {
 						GAME.BULLETS[i].top = -50;
@@ -132,24 +129,28 @@ GAME.collisionDetection.checkAll = function() {
 				for(var i=0; i<GAME.ENEMIES.length; i++) {
 					if(GAME.ENEMIES[i].id() == obj2.id()) {
 						var enemy = GAME.ENEMIES[i];
-						//var enemy_id = i;
-						enemy.change('img/explosion.png', 30, 30, 0, 3).speed(5).animation(0).frame(-1).zone(30,30,0,0);
-						GAME.player.points += GAME.Config.pointsDiff;
+						enemy.change('img/explosion.png', 30, 30, 0, 3);
+						enemy.speed(5).animation(0).frame(-1).zone(30,30,0,0);
+						GAME.state.points += GAME.Config.pointsDiff;
 						enemy.callback(function(){
 							enemy.top = -enemy.height;
 							enemy.position(enemy.position().x,enemy.top);
-							//GAME.ENEMIES.splice(enemy_id,1);
-							//console.log('Number of enemies: '+GAME.ENEMIES.length);
 							enemy.callback(function(){},1000);
 							if(!GAME.ENEMIES.length) {
-								//alert('Game over!');
 								GAME.player.level += 1;
-								GAME.Utils.newLevel();
+								GAME.Utils.NewLevel();
 								var unlock = '';
 								if(GAME.player.level == 5) {
 									unlock = "You've reached level 5 and unlocked new rocket!";
 									var anim = GAME.player.animation();
 									GAME.player.animation((anim += 1) % 2);
+								}
+								if(GAME.player.level == 10) {
+									var winTitle = "<h2>We have a winner!</h2>",
+										winText = "<p>You've reached level 10 and won the game! Who's awesome? You're awesome!</p>";
+									GAME.Utils.Alert(winTitle, winText);
+									GAME.Config.active = false;
+									Mibbu.off();
 								}
 								GAME.Utils.Alert(GAME.Config.msg.nextLevelTitle, GAME.Config.msg.nextLevelText+unlock);
 								GAME.Config.active = false;

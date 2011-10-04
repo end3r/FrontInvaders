@@ -58,7 +58,7 @@ GAME.Input.prototype = {
 			}
 			case GAME.Config.input.START: {
 				if(!GAME.Config.active)
-					GAME._tag('h1', GAME._id('menu')).onclick();
+					GAME.$tag('h1', GAME.$id('menu')).onclick();
 				break;
 			}
 			case GAME.Config.input.CHANGE: {
@@ -88,18 +88,18 @@ GAME.Input.prototype = {
 		}
 		return false;
 	},
-	frame: function(player) {
+	frame: function() {
 		if (GAME.Config.active) {
 			if (this.pressed.left || this.held.left) {
-				player.position(player.position().x -= GAME.Config.moveInterval, player.position().y);
+				GAME.player.position(GAME.player.position().x -= GAME.Config.moveInterval, GAME.player.position().y);
 			}
 			if (this.pressed.right || this.held.right) {
-				player.position(player.position().x += GAME.Config.moveInterval, player.position().y);
+				GAME.player.position(GAME.player.position().x += GAME.Config.moveInterval, GAME.player.position().y);
 			}
 			if(this.pressed.shoot) {
 				this.pressed.shoot = false;
 				if(GAME.BULLETS.length < GAME.Config.bulletLimit) {
-					GAME.BULLETS.push(GAME.Utils.NewBullet(player));
+					GAME.BULLETS.push(GAME.Utils.NewBullet());
 				}
 			}
 		}

@@ -2,40 +2,40 @@
 var GAME = {};
 
 GAME.Init = function() {
-	Mibbu.init().hitsOff();
+	Mibbu.init().hitsOff(); /* my own collision detection, see utils.js for details */
 	var preload = {};
 	preload.player = new Mibbu.spr('img/player.png', 40, 40, 0, 1),
-	preload.enemies = new Mibbu.spr('img/enemies.png', 30, 30, 1, 2),
+	preload.enemy = new Mibbu.spr('img/enemies.png', 30, 30, 1, 2),
 	//preload.bullet = new Mibbu.spr('img/bullet.png', 2, 4, 1, 0),
 	preload.explosion = new Mibbu.spr('img/explosion.png', 30, 120, 0, 3),
 	preload.background = new Mibbu.bg('img/bg.jpg', 6, 90, {x:0,y:0});
 
 	GAME.keyboard = new GAME.Input();
-	var menu = GAME._id('menu');
-	GAME._tag('h1', menu).onclick = function() { GAME.Menu('game', preload); };
-	GAME._tag('h2', menu).onclick = function() { GAME.Menu('instructions'); };
-	GAME._tag('h3', menu).onclick = function() { GAME.Menu('about'); };
+	var menu = GAME.$id('menu');
+	GAME.$tag('h1', menu).onclick = function() { GAME.Menu('game', preload); };
+	GAME.$tag('h2', menu).onclick = function() { GAME.Menu('instructions'); };
+	GAME.$tag('h3', menu).onclick = function() { GAME.Menu('about'); };
 	GAME.Utils.LinkBackToMenu('howTo');
 	GAME.Utils.LinkBackToMenu('about');
 	
-	GAME._id('container').style.width = GAME_WIDTH;
-	GAME._id('container').style.height = GAME_HEIGHT;
+	GAME.$id('container').style.width = GAME_WIDTH;
+	GAME.$id('container').style.height = GAME_HEIGHT;
 };
 
 GAME.Menu = function(id, preload) {
 	switch(id) {
 		case 'game': {
-			GAME._id('game').style.zIndex = '20';
-			GAME._id('statbar').style.zIndex = '21';
+			GAME.$id('game').style.zIndex = '20';
+			GAME.$id('statbar').style.zIndex = '21';
 			GAME.Start(preload);
 			break;
 		}
 		case 'instructions': {
-			GAME._id('howTo').style.zIndex = '20';
+			GAME.$id('howTo').style.zIndex = '20';
 			break;
 		}
 		case 'about': {
-			GAME._id('about').style.zIndex = '20';
+			GAME.$id('about').style.zIndex = '20';
 			break;
 		}
 		default: {;}
@@ -44,55 +44,54 @@ GAME.Menu = function(id, preload) {
 
 GAME.Start = function(preload) {
 	window.focus();
-	var	player = preload.player,
-		enemies = preload.enemies,
-		//bullet = preload.bullet,
-		explosion = preload.explosion,
-		background = preload.background;
+	GAME.player = preload.player;
+	GAME.background = preload.background;
+	GAME.enemy = preload.enemy;
+	GAME.explosion = preload.explosion;
 
-	enemies.position(-30, -30, 4).speed(0);
-	explosion.position(-40,-40).speed(0);
-	
-	var enemy_width = 30, enemy_height = 30;
+	GAME.background.width = GAME_WIDTH;
+	GAME.background.height = GAME_HEIGHT;
+	GAME.player.width = 40;
+	GAME.player.height = 40;
+	GAME.enemy.width = 30;
+	GAME.enemy.height = 30;
+	GAME.explosion.width = 30;
+	GAME.explosion.height = 30;
 
-	background.speed(0).dir(90).on();
-	background.width = GAME_WIDTH;
-	background.height = GAME_HEIGHT;
-	GAME.background = background;
+	GAME.background.speed(0).dir(90).on();
+	GAME.explosion.position(-GAME.explosion.width,-GAME.explosion.height, 1).speed(0);
+	GAME.enemy.position(-GAME.enemy.width, -GAME.enemy.height, 4).speed(0);
 
-	player.width = 40;
-	player.height = 40;
+	GAME.enemy.dirX = 7;
+	GAME.enemy.dirY = 0;
+	GAME.enemy.deadline = 0;
 
-	GAME.frameCount = 0;
-	GAME.enemyDirX = 7;
-	GAME.enemyDirY = 0;
-	GAME.enemyWidth = 30;
-	
-	GAME.player = player;
+	GAME.state = {};
+	GAME.state.frameCount = 0;
+	GAME.state.level = 2;
+	GAME.state.points = 0;
+	GAME.state.borderTop = 70;
+	GAME.state.borderBottom = 0;
+
 	GAME.player.lives = 3;
-	GAME.player.points = 0;
-	GAME.player.level = 1;
-	
-	// new level
-	GAME.Utils.newLevel();
 
+	GAME.Utils.NewLevel();
 	GAME.Config.active = true;
 	Mibbu.on();
 	
 	var gameLoop = function(){
-		GAME.frameCount++;
-		GAME.keyboard.frame(player,background);
+		GAME.state.frameCount++;
+		GAME.keyboard.frame();
 
-		GAME._id('points').innerHTML = GAME.player.points;
-		GAME._id('lives').innerHTML = GAME.player.lives;
-		GAME._id('level').innerHTML = GAME.player.level;
+		GAME.$id('points').innerHTML = GAME.state.points;
+		GAME.$id('level').innerHTML = GAME.state.level;
+		GAME.$id('lives').innerHTML = GAME.player.lives;
 
 		if(GAME.BULLETS.length) {
 			for(var b=0; b<GAME.BULLETS.length; b++) {
-				var newY = GAME.BULLETS[b].position().y -= GAME.Config.bulletSpeed;
+				var newY = GAME.BULLETS[b].position().y - GAME.Config.bulletSpeed;
 				if(newY <= 0) {
 					GAME.BULLETS.splice(b,1);
-					//console.log('bullet removed, len = '+GAME.BULLETS.length);
 				}
 				else {
 					GAME.BULLETS[b].top = newY;
@@ -102,29 +101,43 @@ GAME.Start = function(preload) {
 		}
 
 		/* ENEMY MOVEMENT */
-		if(!(GAME.frameCount % (30-4*(GAME.player.level-1)))){
+		if(!(GAME.state.frameCount % (30-4*(GAME.state.level-1)))){ // workaround - fix this!
 			var offScreenRight = false,
 				offScreenLeft = false;
 			for(var i = 0; i < GAME.ENEMIES.length; i++) {
-				if(GAME.ENEMIES[i].position().x > background.width-2*GAME.enemyWidth) {
+				if(GAME.ENEMIES[i].position().x > GAME.background.width-2*GAME.enemy.width) {
 					offScreenRight = true;
 				}
-				if(GAME.ENEMIES[i].position().x < GAME.enemyWidth) {
+				if(GAME.ENEMIES[i].position().x < GAME.enemy.width) {
 					offScreenLeft = true;
+				}
+				var enemyBottomPosition = GAME.ENEMIES[i].top+GAME.ENEMIES[i].height;
+				if(enemyBottomPosition > GAME.enemy.deadline) {
+					GAME.enemy.deadline = enemyBottomPosition;
+				}
+				if(GAME.enemy.deadline >= GAME.player.position().y) {
+					alert('KILLED BY TEH ALIENS!');
+				//	GAME.player.lives--;
+				//	GAME.Utils.NewLevel();
+				//	GAME.Utils.Alert(GAME.Config.msg.repeatLevelTitle, GAME.Config.msg.repeatLevelText);
+					GAME.Config.active = false;
+					Mibbu.off();
+					// check every enemy for collisions with the player
 				}
 			}
 			if(offScreenLeft || offScreenRight) {
-				GAME.enemyDirX = -GAME.enemyDirX;
-				GAME.enemyDirY += 15;
+				GAME.enemy.dirX = -GAME.enemy.dirX;
+				GAME.enemy.dirY += 15;
 			}
 			for(var i = 0; i < GAME.ENEMIES.length; i++) {
-				GAME.ENEMIES[i].position(GAME.ENEMIES[i].position().x += GAME.enemyDirX, GAME.ENEMIES[i].position().y += GAME.enemyDirY);
-				GAME.ENEMIES[i].left += GAME.enemyDirX;
-				GAME.ENEMIES[i].top += GAME.enemyDirY;
+				GAME.ENEMIES[i].position(GAME.ENEMIES[i].position().x += GAME.enemy.dirX,
+					GAME.ENEMIES[i].position().y += GAME.enemy.dirY);
+				GAME.ENEMIES[i].left += GAME.enemy.dirX;
+				GAME.ENEMIES[i].top += GAME.enemy.dirY;
 			}
-			GAME.enemyDirY = 0;
+			GAME.enemy.dirY = 0;
 		}
 	}
 	Mibbu.hook(gameLoop);
-	Mibbu.hook(GAME.collisionDetection.checkAll);
+	Mibbu.hook(GAME.CollisionDetection.CheckAll);
 };
