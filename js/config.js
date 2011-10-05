@@ -31,7 +31,12 @@ GAME.Lang['pl'] = {
 		repeatLevelText: "<p>Zostałeś zabity przez badzIEwia!</p><p>Naciśnij spację, by kontynuować!</p>",
 		congratulations: "<p>Gratulacje, zdobyłeś # punktów!</p>",
 		gameOver: "<h1>KONIEC GRY!</h1>",
-		tryAgain: "<p><a href=''>Jeszcze raz?</a></p>"
+		tryAgain: "<p><a href=''>Jeszcze raz?</a></p>",
+		killedTitle: "Troop! ;(",
+		killedText: "Troop! ;(",
+		unlocked: "Osiągnąłeś poziom 5, otrzymujesz nową rakietę!",
+		winTitle: "<h2>We have a winner!</h2>",
+		winText: "<p>You've reached level 10 and won the game! Who's awesome? You're awesome!</p>"
 };
 GAME.Lang['en'] = {
 		pausedTitle: "<h2>PAUSED</h2>",
@@ -42,5 +47,10 @@ GAME.Lang['en'] = {
 		repeatLevelText: "<p>You were killed by the al_IE_ns!</p><p>Press spacebar to continue!</p>",
 		congratulations: "<p>Congratulations, you've got <span>#</span> points!</p>",
 		gameOver: "<h1>GAME OVER!</h1>",
-		tryAgain: "<p><a href=''>Try again?</a></p>"
+		tryAgain: "<p><a href=''>Try again?</a></p>",
+		killedTitle: "Player KILLED! ;(",
+		killedText: "Player KILLED! ;(",
+		unlocked: "You've reached level 5 and unlocked new rocket!",
+		winTitle: "<h2>We have a winner!</h2>",
+		winText: "<p>You've reached level 10 and won the game! Who's awesome? You're awesome!</p>"
 };

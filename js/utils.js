@@ -84,7 +84,7 @@ GAME.Utils.NewLevel = function() {
 		GAME.background.height-GAME.player.height-GAME.state.borderBottom, 5).speed(0);
 	GAME.BULLETS = [];
 	GAME.ENEMIES = [];
-	GAME.Config.enemyHeight = GAME.state.level%4;
+	GAME.Config.enemyHeight = (GAME.state.level%4) ? (GAME.state.level%4) : 4;
 
 	for(var i = 0; i < GAME.Config.enemyHeight; i++) {
 		for(var j = 0; j < GAME.Config.enemyWidth; j++) {
@@ -132,11 +132,12 @@ GAME.CollisionDetection.CheckAll = function() {
 
 				if(GAME.player.id() == obj1.id()) {
 					//console.log('PLAYER vs ENEMY! KILLED!');
-					GAME.Config.active = false;
-					Mibbu.off();
-					var failTitle = "<h2>You died!</h2>",
-					failText = "<p>;(</p>";
-					GAME.Utils.Alert(failTitle, failText);
+				//	GAME.Config.active = false;
+				//	Mibbu.off();
+				//	var failTitle = "<h2>You died!</h2>",
+				//	failText = "<p>;(</p>";
+				//	GAME.Utils.Alert(failTitle, failText);
+					alert(GAME.Lang[GAME.state.lang].killedText+' v2');
 				}
 
 				var enemyTab = [];
@@ -156,14 +157,12 @@ GAME.CollisionDetection.CheckAll = function() {
 								GAME.Utils.NewLevel();
 								var unlock = '';
 								if(GAME.player.level == 5) {
-									unlock = "You've reached level 5 and unlocked new rocket!";
+									unlock = GAME.Lang[GAME.state.lang].unlocked;
 									var anim = GAME.player.animation();
 									GAME.player.animation((anim += 1) % 2);
 								}
 								if(GAME.player.level == 10) {
-									var winTitle = "<h2>We have a winner!</h2>",
-										winText = "<p>You've reached level 10 and won the game! Who's awesome? You're awesome!</p>";
-									GAME.Utils.Alert(winTitle, winText);
+									GAME.Utils.Alert(GAME.Lang[GAME.state.lang].winTitle, GAME.Lang[GAME.state.lang].winText);
 									GAME.Config.active = false;
 									Mibbu.off();
 								}

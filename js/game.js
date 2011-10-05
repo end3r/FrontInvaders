@@ -128,7 +128,7 @@ GAME.Start = function(preload) {
 					GAME.player.lives--;
 					GAME.$id('lives').innerHTML = GAME.player.lives;
 					//
-					alert('Player KILLED! ;(');
+					alert(GAME.Lang[GAME.state.lang].killedText+' v1');
 				}
 			}
 			if(offScreenLeft || offScreenRight) {
