@@ -72,6 +72,7 @@ GAME.Start = function(preload) {
 	GAME.state.points = 0;
 	GAME.state.borderTop = 80;
 	GAME.state.borderBottom = 15;
+	GAME.state.lang = 'en';
 
 	GAME.player.lives = 3;
 	GAME.player.hit = true;
@@ -79,14 +80,10 @@ GAME.Start = function(preload) {
 	GAME.Utils.NewLevel();
 	GAME.Config.active = true;
 	Mibbu.on();
-	
+
 	var gameLoop = function(){
 		GAME.state.frameCount++;
 		GAME.keyboard.frame();
-
-		GAME.$id('points').innerHTML = GAME.state.points;
-		GAME.$id('level').innerHTML = GAME.state.level;
-		GAME.$id('lives').innerHTML = GAME.player.lives;
 
 		if(GAME.BULLETS.length) {
 			for(var b=0; b<GAME.BULLETS.length; b++) {
@@ -117,13 +114,21 @@ GAME.Start = function(preload) {
 					GAME.enemy.deadline = enemyBottomPosition;
 				}
 				if(GAME.enemy.deadline >= GAME.player.position().y) {
-					alert('KILLED BY TEH ALIENS!');
+					//alert('KILLED BY TEH ALIENS!');
+					// STILL F*CKED UP ;(
 				//	GAME.player.lives--;
 				//	GAME.Utils.NewLevel();
-				//	GAME.Utils.Alert(GAME.Config.msg.repeatLevelTitle, GAME.Config.msg.repeatLevelText);
-					GAME.Config.active = false;
-					Mibbu.off();
+				//	GAME.Utils.Alert(GAME.Lang[GAME.state.lang].repeatLevelTitle, GAME.Lang[GAME.state.lang].repeatLevelText);
 					// check every enemy for collisions with the player
+				//	for(var e=0; e<GAME.ENEMIES.length; e++) {
+						// BROWSER CRASH! ;(
+				//		GAME.CollisionDetection.Add(GAME.player, GAME.ENEMIES[e]);
+						//alert('Player KILLED ;(');
+				//	}
+					GAME.player.lives--;
+					GAME.$id('lives').innerHTML = GAME.player.lives;
+					//
+					alert('Player KILLED! ;(');
 				}
 			}
 			if(offScreenLeft || offScreenRight) {

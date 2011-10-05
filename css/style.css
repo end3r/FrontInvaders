@@ -1,14 +1,24 @@
 * { margin:  0; padding: 0; }
 body { font: normal 14px Times New Roman; background: #F4F3EF; }
+ul { list-style-type: none; }
 #container { width: 700px; margin: 0 auto; position: relative; height: 500px; }
 #container > div { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 #container #game { z-index: 2; }
 p#statbar { position: absolute; top: 0; left: 0; z-index: 2; color: #00ffc6; font-weight: bold; width: 100%; opacity: 1; font-size: 14px; background: #f5f5f5; height: 48px; color: #fff; border-bottom: 1px solid #e5e2df; box-shadow: 0px 1px 1px -1px #fff; }
-p#statbar span#points, p#statbar span#lives, p#statbar span#level { display: inline-block; width: 35px; text-align: right; }
-p#statbar > span { display: block; height: 48px; }
+p#statbar span#points, p#statbar span#lives, p#statbar span#level { display: inline-block; width: 35px; text-align: right; color: #484646; font: normal 14px Verdana; }
+p#statbar > span { display: block; height: 48px; font: normal 12px Verdana; text-transform: uppercase; color: #fff; text-shadow: 1px 1px 1px #484646; position: relative; }
 p#statbar > span#stat-po { float: left; width: 80px; background: url(../img/panel_points.png) no-repeat; margin-left: 15px; }
-p#statbar > span#stat-li{ float: right; width: 80px; background: url(../img/panel_lives.png) no-repeat; margin-right: 15px; }
-p#statbar > span#stat-le { margin: 0 auto; width: 63px; text-align: center; background: url(../img/panel_level.png) no-repeat; }
+p#statbar > span#stat-li{ float: right; text-align: right; width: 80px; background: url(../img/panel_lives.png) no-repeat; margin-right: 15px; }
+p#statbar > span#stat-le { margin: 0 auto; width: 63px; text-align: center; background: url(../img/panel_level.png) no-repeat; padding-top: 3px; }
+
+p#statbar b { display: block; padding: 12px 15px; font-weight: normal; }
+p#statbar span#stat-li b { padding: 12px 20px; }
+
+p#statbar span#points { position: absolute; top: 11px; left: 100px; }
+p#statbar span#lives { position: absolute; top: 11px; right: 90px; }
+p#statbar span#level { position: absolute; top: 16px; left: 2px; color: #fff; }
+
+p#statbar span#lives i { display: inline-block; width: 10px; height: 11px; background: url(../img/life.jpg) no-repeat; text-indent: -5000px; overflow: hidden; }
 
 #container #menu { background: #fff url(../img/logo.jpg) center top no-repeat; color: #888; text-align: center; text-shadow: 1px 1px 1px #fff; z-index: 10; }
 #menu h1, #menu h2, #menu h3 { cursor: pointer; display: inline-block; padding: 5px 20px; border: 1px solid transparent; border-bottom-color: #B1503D; }

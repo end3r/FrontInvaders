@@ -38,7 +38,7 @@ GAME.Input.prototype = {
 			case GAME.Config.input.PAUSE: {
 				if(GAME.Config.active) {
 					GAME.Config.active = false;
-					GAME.Utils.Alert(GAME.Config.msg.pausedTitle, GAME.Config.msg.pausedText);
+					GAME.Utils.Alert(GAME.Lang[GAME.state.lang].pausedTitle, GAME.Lang[GAME.state.lang].pausedText);
 					Mibbu.off();
 				} else {
 					GAME.Config.active = true;

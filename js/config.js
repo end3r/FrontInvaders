@@ -18,17 +18,29 @@ GAME.Config = {
 	//bulletLag: 5,
 	enemyWidth: 12,
 	enemyHeight: 5,
-	pointsDiff: 100,
-	
-	msg: {
+	pointsDiff: 100
+};
+
+GAME.Lang = [];
+GAME.Lang['pl'] = {
+		pausedTitle: "<h2>PAUZA</h2>",
+		pausedText: "<p>Naciśnij spację ponownie, by wrócić do gry.</p><p>Lub wróć do <a href=''>menu głównego</a>?</p>",
+		nextLevelTitle: "<h2>Następny poziom!</h2>",
+		nextLevelText: "<p>Gratulacje, zabiłeś wszystkie badzIEwia i przeszedłeś na kolejny poziom!</p><p>Naciśnij spację, by kontynuować!</p>",
+		repeatLevelTitle: "<h2>O nie!</h2>",
+		repeatLevelText: "<p>Zostałeś zabity przez badzIEwia!</p><p>Naciśnij spację, by kontynuować!</p>",
+		congratulations: "<p>Gratulacje, zdobyłeś # punktów!</p>",
+		gameOver: "<h1>KONIEC GRY!</h1>",
+		tryAgain: "<p><a href=''>Jeszcze raz?</a></p>"
+};
+GAME.Lang['en'] = {
 		pausedTitle: "<h2>PAUSED</h2>",
 		pausedText: "<p>Press spacebar again to get back to the game.</p><p>Or go to the <a href=''>main menu</a>?</p>",
 		nextLevelTitle: "<h2>Next level!</h2>",
 		nextLevelText: "<p>Congratulations, You killed all of the al_IE_ns and reached next level!</p><p>Press spacebar to continue!</p>",
 		repeatLevelTitle: "<h2>Oh noes!</h2>",
 		repeatLevelText: "<p>You were killed by the al_IE_ns!</p><p>Press spacebar to continue!</p>",
-		congratulations: "<p>Congratulations, you've reached <span>#</span> metres!</p>",
+		congratulations: "<p>Congratulations, you've got <span>#</span> points!</p>",
 		gameOver: "<h1>GAME OVER!</h1>",
 		tryAgain: "<p><a href=''>Try again?</a></p>"
-	}
 };

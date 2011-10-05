@@ -17,7 +17,7 @@ GAME.Utils.Alert = function(title, message) {
 GAME.Utils.GameOver = function(what) {
 	var msg = '',
 		score = parseFloat(GAME.Config.height).toFixed(1),
-		defaultMsg = '<p>'+(GAME.Config.msg.congratulations).replace('#',score)+'</p>';
+		defaultMsg = '<p>'+(GAME.Lang[GAME.state.lang].congratulations).replace('#',score)+'</p>';
 
 	switch(what) {
 		case 'player': {
@@ -31,7 +31,7 @@ GAME.Utils.GameOver = function(what) {
 		default: { msg = defaultMsg; }
 	}
 	Mibbu.off();
-	GAME.Utils.Alert(GAME.Config.msg.gameOver, msg+GAME.Config.msg.tryAgain);
+	GAME.Utils.Alert(GAME.Lang[GAME.state.lang].gameOver, msg+GAME.Lang[GAME.state.lang].tryAgain);
 };
 
 GAME.Utils.NewBullet = function() {
@@ -48,6 +48,7 @@ GAME.Utils.NewBullet = function() {
 		GAME.CollisionDetection.Add(newBullet, GAME.ENEMIES[e]);
 	}
 	GAME.state.points -= 10;
+	GAME.$id('points').innerHTML = GAME.state.points;
 	return newBullet;
 };
 
@@ -83,7 +84,7 @@ GAME.Utils.NewLevel = function() {
 		GAME.background.height-GAME.player.height-GAME.state.borderBottom, 5).speed(0);
 	GAME.BULLETS = [];
 	GAME.ENEMIES = [];
-	GAME.Config.enemyHeight = GAME.state.level;
+	GAME.Config.enemyHeight = GAME.state.level%4;
 
 	for(var i = 0; i < GAME.Config.enemyHeight; i++) {
 		for(var j = 0; j < GAME.Config.enemyWidth; j++) {
@@ -93,6 +94,7 @@ GAME.Utils.NewLevel = function() {
 			enemyCounter++;
 		}
 	}
+	GAME.$id('level').innerHTML = GAME.state.level;
 };
 
 /* Collision Detection */
@@ -127,6 +129,16 @@ GAME.CollisionDetection.CheckAll = function() {
 						GAME.BULLETS.splice(i,1);
 					}
 				}
+
+				if(GAME.player.id() == obj1.id()) {
+					//console.log('PLAYER vs ENEMY! KILLED!');
+					GAME.Config.active = false;
+					Mibbu.off();
+					var failTitle = "<h2>You died!</h2>",
+					failText = "<p>;(</p>";
+					GAME.Utils.Alert(failTitle, failText);
+				}
+
 				var enemyTab = [];
 				for(var i=0; i<GAME.ENEMIES.length; i++) {
 					if(GAME.ENEMIES[i].id() == obj2.id()) {
@@ -134,6 +146,7 @@ GAME.CollisionDetection.CheckAll = function() {
 						enemy.change('img/explosion.png', 30, 30, 0, 3);
 						enemy.speed(5).animation(0).frame(-1).zone(30,30,0,0);
 						GAME.state.points += GAME.Config.pointsDiff;
+						GAME.$id('points').innerHTML = GAME.state.points;
 						enemy.callback(function(){
 							enemy.top = -enemy.height;
 							enemy.position(enemy.position().x,enemy.top);
@@ -154,7 +167,7 @@ GAME.CollisionDetection.CheckAll = function() {
 									GAME.Config.active = false;
 									Mibbu.off();
 								}
-								GAME.Utils.Alert(GAME.Config.msg.nextLevelTitle, GAME.Config.msg.nextLevelText+unlock);
+								GAME.Utils.Alert(GAME.Lang[GAME.state.lang].nextLevelTitle, GAME.Lang[GAME.state.lang].nextLevelText+unlock);
 								GAME.Config.active = false;
 								Mibbu.off();
 							}
