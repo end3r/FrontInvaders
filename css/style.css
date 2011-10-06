@@ -1,7 +1,7 @@
 * { margin:  0; padding: 0; }
-body { font: normal 14px Times New Roman; background: #F4F3EF; }
+body { font: normal 13px Verdana; background: #ccc; }
 ul { list-style-type: none; }
-#container { width: 700px; margin: 0 auto; position: relative; height: 500px; }
+#container { width: 700px; height: 400px; margin: 0 auto; position: relative; }
 #container > div { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 #container #game { z-index: 2; }
 
@@ -19,15 +19,21 @@ ul { list-style-type: none; }
 #statbar #statbar-right ul { position: absolute; top: 12px; left: -50px; }
 #statbar #statbar-right ul li { display: inline-block; width: 15px; height: 11px; background: url(../img/life.jpg) no-repeat; text-indent: 5000px; overflow: hidden; }
 
-#container #menu { background: #fff url(../img/logo.jpg) center top no-repeat; color: #888; text-align: center; text-shadow: 1px 1px 1px #fff; z-index: 10; }
-#menu h1, #menu h2, #menu h3 { cursor: pointer; display: inline-block; padding: 5px 20px; border: 1px solid transparent; border-bottom-color: #B1503D; }
-#menu h1:hover, #menu h2:hover, #menu h3:hover { background: #B1503D; color: #fff; text-shadow: 1px 1px 1px #666; }
+#container #menu { background: #f5f5f5 url(../img/logo.jpg) center top no-repeat; color: #888; text-align: center; text-shadow: 1px 1px 1px #fff; z-index: 10; position: relative; }
+#menu ul { padding-top: 150px; width: 100px; margin: 0 auto; }
+#menu ul li { text-align: center; background: #c6c6c6; margin-bottom: 15px; cursor: pointer; }
+#menu ul li > span { font: normal 14px Verdana; text-transform: uppercase; color: #888888; text-shadow: 1px 1px 1px #fff; display: block; padding: 15px 10px 0px 10px; }
+#menu ul li:first-child > span { font-size: 16px; }
+#menu ul li > span > span { font: normal 12px Verdana; text-transform: lowercase; display: block; border-top: 1px solid #fff; padding: 3px 10px 10px 10px; margin-top: 5px; }
+#menu ul li:hover span { background: #ad4c39; color: #fff; text-shadow: 1px 1px 1px #000; }
 #menu p { color: #888; }
 #menu h1 { margin-top: 180px; font-size: 20px; }
 #menu h2 { margin-top: 15px; font-size: 16px; }
 #menu h3 { margin-top: 15px; font-size: 14px; }
+#menu-aliens { width: 180px; height: 160px; background: url(../img/aliens.jpg) no-repeat; position: absolute; top: 20px; left: 85px; }
+#menu-rocket { width: 175px; height: 170px; background: url(../img/rocket.jpg) no-repeat; position: absolute; bottom: 10px; right: 90px; }
 
-#howTo { background: #E0D9CF url(../img/howtoplay.jpg) no-repeat; color: #666; z-index: 9; position: relative; }
+#howTo { background: #f5f5f5 url(../img/howtoplay.jpg) no-repeat; color: #666; z-index: 9; position: relative; }
 #howTo p { background: #fff; color: #0c7a8b; font-size: 14px; position: absolute; padding: 2px 4px 0px 4px; border: 1px solid #0c7a8b; border-radius: 5px; }
 #howTo p.meteor { top: 70px; left: 20px; }
 #howTo p.satellite { top: 40px; right: 240px; }
@@ -37,21 +43,23 @@ ul { list-style-type: none; }
 #howTo p.height { bottom: 55px; left: 40px; }
 #howTo p.speed { bottom: 50px; right: 50px; }
 #howTo p.rocket { bottom: 115px; left: 480px; }
-#about { background: #E0D9CF; color: #666; text-align: center; text-shadow: 1px 1px 1px #fff; z-index: 8; }
+#about { background: #f5f5f5; color: #666; text-align: center; text-shadow: 1px 1px 1px #fff; z-index: 8; }
 #about p { margin-top: 0px; }
 #about p a { color: #888; text-decoration: none; font-weight: bold; }
-#about h2 { margin-top: 30px; }
-#about h3 { margin-top: 10px; }
+#about h2 { margin: 10px 0 5px 0; text-shadow: 1px 1px 1px #ccc; }
+#about h3 { margin-top: 10px; text-shadow: 1px 1px 1px #ccc; }
 #howTo span, #about span { display: inline-block; cursor: pointer; background: #aaa; color: #fff; text-transform: uppercase; font-size: 12px; padding: 15px; border: 1px solid #ccc; border-radius: 0px 10px 10px 0px; position: absolute; top: 150px; left: 0px; text-shadow: 1px 1px 1px #000; }
 #howTo span:hover, #about span:hover { background: #B1503D; color: #fff; }
 
-#message { width: 700px; height: 500px; z-index: 5; position: relative; }
-#message .box { position: absolute; top: 100px; left: 200px; z-index: 4; width: 500px; height: 200px; background: #e2ded3; font: bold 12px Arial; }
-#message .shadow { position: absolute; top: 0; left: 0; z-index: 3; width: 700px; height: 500px; background: #000; opacity: 0.5; }
-#message .box h1, #message .box h2 { width: 500px; height: 100px; text-indent: -5000px; margin-bottom: 20px; }
-#message .box h1 { background: url(../img/gameover.jpg) no-repeat; }
-#message .box h2 { background: url(../img/pause.jpg) no-repeat; }
-#message .box p { color: #3d7284; text-align: center; text-shadow: 1px 1px 1px #fff; line-height: 20px; }
-#message .box p a { color: #17a6d5; text-decoration: underline; }
-#message .box p a:hover { text-decoration: none; }
-#message .box p span { font-size: 16px; padding: 0 2px; text-shadow: 1px 1px 2px #fff; }
+#message { width: 100%; height: 100%; z-index: 5; position: relative; }
+#message .box { position: absolute; top: 100px; left: 150px; z-index: 6; width: 400px; height: 200px; background: #e3e1e1; }
+#message .box > div { position: relative; width: 100%; height: 100%; }
+#message .box > div span { position: absolute; display: block; width: 200px; height: 65px; bottom: 0px; right: 20px; background: url(../img/box-backgrounds.jpg) no-repeat; }
+#message .box > div span#box-killed { background-position: 0px 0px; }
+#message .box > div span#box-nextlevel { background-position: 0px -65px; }
+#message .box > div span#box-pause { background-position: 0px -130px; }
+#message .shadow { position: absolute; top: 0; left: 0; z-index: 3; width: 100%; height: 100%; background: #000; opacity: 0.5; }
+#message .box h4 { font: normal 24px Verdana; color: #484646; text-align: center; padding: 25px 0px; text-shadow: 1px 1px 1px #666; }
+#message .box p { line-height: 20px; font-size: 12px; padding: 0 40px; color: #585656; }
+#message .box p a { color: #ac4b38; text-decoration: none; }
+#message .box p a:hover { text-decoration: underline; }

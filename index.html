@@ -20,12 +20,13 @@
 		<div id="statbar-right"><p>Lives</p><ul id="lives"><li>|</li><li>|</li><li>|</li></ul></div>
 	</div>
 	<div id="menu">
-		<h1>START</h1>
-		<p>the game</p>
-		<h2>HOW</h2>
-		<p>to play</p>
-		<h3>ABOUT</h3>
-		<p>the game</p>
+		<ul>
+			<li id="menu-start"><span>Start <span>the game</span></span></li>
+			<li id="menu-howto"><span>How <span>to play</span></span></li>
+			<li id="menu-about"><span>About <span>the game</span></span></li>
+		</ul>
+		<p id="menu-aliens"></p>
+		<p id="menu-rocket"></p>
 	</div>
 	<div id="howTo">
 		<p class="meteor">Watch out for that meteor!</p>
@@ -39,23 +40,24 @@
 		<span>Back<br />to<br />menu</span>
 	</div>
 	<div id="about">
-		<h2>onSpaceStart</h2>
-		<p>Simple game based on the Mibbu microframework,<br />made to promote <a href="http://ongamestart.com/">onGameStart</a> - first HTML5 game conference.</p>
-		<p><strong>onGameStart</strong> will take place in Warsaw, Poland on 22-23 september 2011.</p>
+		<h2>Front Invaders</h2>
+		<p>Simple HTML5 game build with the Mibbu microframework,<br />made to promote <a href="http://frontrowconf.com/">Front Row</a> - conference for the people,<br/>who want to shape the future of the web.</p>
+		<p>Front Row Conf will take place in Kraków, Poland on 20-21 October 2011.</p>
 		<h3>Info</h3>
-		<p>Take control of the rocket and fly as high as You can.<br />Watch out for the balloons, birds, airplanes, meteors and satellites.</p>
+		<p>Take control over the HTML5 Rocket,<br />and kill as many evil alien Explorers as You can.<br />Stand up and fight, the Open Web needs You!</p>
 		<h3>Controls</h3>
-		<p>Use arrow keys to move your rocket. Hit spacebar to pause the game.</p>
+		<p>Use left and right arrow keys to move Your Rocket,<br />press up arrow or Z key to fire Your weapon,<br />hit spacebar to pause the game.</p>
 		<h3>Authors</h3>
-		<p><a href="http://end3r.com/">Andrzej Mazur</a> - idea, coding stuff</p>
+		<p><a href="http://end3r.com/">Andrzej Mazur</a> - coding</p>
 		<p><a href="http://mypoint.13k.pl/">Ewa Adach</a> - graphics</p>
 		<h3>Credits</h3>
-		<p><a href="http://michalbe.blogspot.com/">Michał Budzyński</a> - author of the Mibbu microframework<br />and onGameStart website graphics (used in the game)</p>
+		<p><a href="http://michalbe.blogspot.com/">Michał Budzyński</a> - author of the Mibbu microframework</p>
+		<p><a href="http://frontrowconf.com/">Front Row Conf</a> - website graphics used in the game</p>
 		<span>Back<br />to<br />menu</span>
 	</div>
 	<div id="message"></div>
 	<script>
-		var GAME_WIDTH = 700, GAME_HEIGHT = 500;
+		var GAME_WIDTH = 700, GAME_HEIGHT = 400;
 		var Mibbu = new mibbu(GAME_WIDTH, GAME_HEIGHT, 'game');
 		GAME.Init();
 	</script>

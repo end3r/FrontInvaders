@@ -3,11 +3,14 @@ GAME.Utils = {};
 GAME.$id = function(id) { return document.getElementById(id); };
 GAME.$tag = function(tag, container) { return (container || document).getElementsByTagName(tag)[0]; };
 
-GAME.Utils.Alert = function(title, message) {
-	var div = GAME.$id('message');
+GAME.Utils.Alert = function(title, message, id) {
+	var div = GAME.$id('message'),
+		idHTML = '';
 	if(title) { // show
+		if(id) idHTML = '<span id="box-'+id+'"></span>';
 		div.style.zIndex = '20';
-		div.innerHTML = '<div class="box">'+title+message+'</div><div class="shadow"></div>';
+		div.innerHTML = '<div class="box"><div><h4>'+title+'</h4><p>'+message+'</p>'+
+			idHTML+'</div></div><div class="shadow"></div>';
 	}
 	else { // hide
 		div.style.zIndex = '5';
@@ -90,7 +93,7 @@ GAME.Utils.NewLevel = function() {
 		for(var j = 0; j < GAME.Config.enemyWidth; j++) {
 			var posX = j*(GAME.enemy.width+10)+diff,
 				posY = i*(GAME.enemy.height+10)+GAME.state.borderTop;
-			GAME.ENEMIES[enemyCounter] = GAME.Utils.NewEnemy(posX, posY, i);
+			GAME.ENEMIES[enemyCounter] = GAME.Utils.NewEnemy(posX, posY, 0); /* i */
 			enemyCounter++;
 		}
 	}
@@ -129,23 +132,14 @@ GAME.CollisionDetection.CheckAll = function() {
 						GAME.BULLETS.splice(i,1);
 					}
 				}
-
-				if(GAME.player.id() == obj1.id()) {
-					//console.log('PLAYER vs ENEMY! KILLED!');
-				//	GAME.Config.active = false;
-				//	Mibbu.off();
-				//	var failTitle = "<h2>You died!</h2>",
-				//	failText = "<p>;(</p>";
-				//	GAME.Utils.Alert(failTitle, failText);
-					alert(GAME.Lang[GAME.state.lang].killedText+' v2');
-				}
-
+				// if(GAME.player.id() == obj1.id()) { /* player killed by an alien */ }
 				var enemyTab = [];
 				for(var i=0; i<GAME.ENEMIES.length; i++) {
 					if(GAME.ENEMIES[i].id() == obj2.id()) {
 						var enemy = GAME.ENEMIES[i];
 						enemy.change('img/explosion.png', 30, 30, 0, 3);
-						enemy.speed(5).animation(0).frame(-1).zone(30,30,0,0);
+						enemy.speed(5).animation(0).frame(0).zone(30,30,0,0);
+						enemy.hit = false;
 						GAME.state.points += GAME.Config.pointsDiff;
 						GAME.$id('points').innerHTML = GAME.state.points;
 						enemy.callback(function(){
@@ -166,7 +160,7 @@ GAME.CollisionDetection.CheckAll = function() {
 									GAME.Config.active = false;
 									Mibbu.off();
 								}
-								GAME.Utils.Alert(GAME.Lang[GAME.state.lang].nextLevelTitle, GAME.Lang[GAME.state.lang].nextLevelText+unlock);
+								GAME.Utils.Alert(GAME.Lang[GAME.state.lang].nextLevelTitle, GAME.Lang[GAME.state.lang].nextLevelText+unlock, 'nextlevel');
 								GAME.Config.active = false;
 								Mibbu.off();
 							}

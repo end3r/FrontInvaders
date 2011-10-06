@@ -4,7 +4,6 @@ GAME.Input = function(){
 	document.onkeypress = function(e){
 	    switch (e.keyCode) {
 			case GAME.Config.input.UP:
-			case GAME.Config.input.DOWN:
 			case GAME.Config.input.LEFT:
 			case GAME.Config.input.RIGHT:
 			case GAME.Config.input.SHOOT:
@@ -38,7 +37,7 @@ GAME.Input.prototype = {
 			case GAME.Config.input.PAUSE: {
 				if(GAME.Config.active) {
 					GAME.Config.active = false;
-					GAME.Utils.Alert(GAME.Lang[GAME.state.lang].pausedTitle, GAME.Lang[GAME.state.lang].pausedText);
+					GAME.Utils.Alert(GAME.Lang[GAME.state.lang].pausedTitle, GAME.Lang[GAME.state.lang].pausedText, 'pause');
 					Mibbu.off();
 				} else {
 					GAME.Config.active = true;
@@ -49,6 +48,7 @@ GAME.Input.prototype = {
 				}
 				break;
 			}
+			case GAME.Config.input.UP:
 			case GAME.Config.input.SHOOT: {
 				if(GAME.Config.active) {
 					this.pressed.shoot = true;
@@ -58,7 +58,7 @@ GAME.Input.prototype = {
 			}
 			case GAME.Config.input.START: {
 				if(!GAME.Config.active)
-					GAME.$tag('h1', GAME.$id('menu')).onclick();
+					GAME.$id('menu-start').onclick();
 				break;
 			}
 			case GAME.Config.input.CHANGE: {

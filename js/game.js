@@ -11,10 +11,9 @@ GAME.Init = function() {
 	preload.background = new Mibbu.bg('img/bg.jpg', 6, 90, {x:0,y:0});
 
 	GAME.keyboard = new GAME.Input();
-	var menu = GAME.$id('menu');
-	GAME.$tag('h1', menu).onclick = function() { GAME.Menu('game', preload); };
-	GAME.$tag('h2', menu).onclick = function() { GAME.Menu('instructions'); };
-	GAME.$tag('h3', menu).onclick = function() { GAME.Menu('about'); };
+	GAME.$id('menu-start').onclick = function() { GAME.Menu('game', preload); };
+	GAME.$id('menu-howto').onclick = function() { GAME.Menu('instructions'); };
+	GAME.$id('menu-about').onclick = function() { GAME.Menu('about'); };
 	GAME.Utils.LinkBackToMenu('howTo');
 	GAME.Utils.LinkBackToMenu('about');
 	
@@ -114,21 +113,12 @@ GAME.Start = function(preload) {
 					GAME.enemy.deadline = enemyBottomPosition;
 				}
 				if(GAME.enemy.deadline >= GAME.player.position().y) {
-					//alert('KILLED BY TEH ALIENS!');
-					// STILL F*CKED UP ;(
-				//	GAME.player.lives--;
-				//	GAME.Utils.NewLevel();
-				//	GAME.Utils.Alert(GAME.Lang[GAME.state.lang].repeatLevelTitle, GAME.Lang[GAME.state.lang].repeatLevelText);
-					// check every enemy for collisions with the player
-				//	for(var e=0; e<GAME.ENEMIES.length; e++) {
-						// BROWSER CRASH! ;(
-				//		GAME.CollisionDetection.Add(GAME.player, GAME.ENEMIES[e]);
-						//alert('Player KILLED ;(');
-				//	}
 					GAME.player.lives--;
 					GAME.$id('lives').innerHTML = GAME.player.lives;
-					//
-					alert(GAME.Lang[GAME.state.lang].killedText+' v1');
+					GAME.Config.active = false;
+					Mibbu.off();
+					GAME.Utils.NewLevel();
+					GAME.Utils.Alert(GAME.Lang[GAME.state.lang].killedText, GAME.Lang[GAME.state.lang].killedTitle, 'killed');
 				}
 			}
 			if(offScreenLeft || offScreenRight) {
