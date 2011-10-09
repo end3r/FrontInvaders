@@ -19,8 +19,8 @@ ul { list-style-type: none; }
 #statbar #statbar-right ul { position: absolute; top: 12px; left: -50px; }
 #statbar #statbar-right ul li { display: inline-block; width: 15px; height: 11px; background: url(../img/life.jpg) no-repeat; text-indent: 5000px; overflow: hidden; }
 
-#container #menu { background: #f5f5f5 url(../img/logo.jpg) center top no-repeat; color: #888; text-align: center; text-shadow: 1px 1px 1px #fff; z-index: 10; position: relative; }
-#menu ul { padding-top: 140px; width: 100px; margin: 0 auto; }
+#container #menu { background: #f5f5f5; color: #888; text-align: center; text-shadow: 1px 1px 1px #fff; z-index: 10; position: relative; }
+#menu ul { padding-top: 15px; width: 100px; margin: 0 auto; }
 #menu ul li { text-align: center; background: #c6c6c6; margin-bottom: 15px; cursor: pointer; }
 #menu ul li > span { font: normal 14px Verdana; text-transform: uppercase; color: #888888; text-shadow: 1px 1px 1px #fff; display: block; padding: 15px 10px 0px 10px; }
 #menu ul li:first-child > span { font-size: 16px; }
