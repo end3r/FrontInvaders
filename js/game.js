@@ -99,7 +99,9 @@ GAME.Start = function(preload) {
 		}
 
 		/* ENEMY MOVEMENT */
-		if(!(GAME.state.frameCount % (30-2*(GAME.state.level-1)))){ // ugly workaround - fix this!
+		var speedLimit = 10;
+		var enemySpeed = (30-2*(GAME.state.level-1)) < speedLimit ? (30-2*(GAME.state.level-1)) : speedLimit;
+		if(!(GAME.state.frameCount % enemySpeed)){ // ugly workaround - fix this!
 			var offScreenRight = false,
 				offScreenLeft = false;
 			for(var i = 0; i < GAME.ENEMIES.length; i++) {

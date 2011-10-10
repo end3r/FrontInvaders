@@ -88,7 +88,8 @@ GAME.Utils.NewLevel = function() {
 		GAME.background.height-GAME.player.height-GAME.state.borderBottom, 5).speed(0);
 	GAME.BULLETS = [];
 	GAME.ENEMIES = [];
-	GAME.Config.enemyHeight = (GAME.state.level%4) ? (GAME.state.level%4) : 4;
+	var heightLimit = 5;
+	GAME.Config.enemyHeight = (GAME.state.level%heightLimit) ? (GAME.state.level%heightLimit) : heightLimit;
 
 	for(var i = 0; i < GAME.Config.enemyHeight; i++) {
 		for(var j = 0; j < GAME.Config.enemyWidth; j++) {
