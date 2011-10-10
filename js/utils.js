@@ -66,6 +66,7 @@ GAME.Utils.NewEnemy = function(posX, posY, type) {
 	newEnemy.height = GAME.enemy.height;
 	newEnemy.left = posX;
 	newEnemy.top = posY;
+	newEnemy.type = type%3;
 	return newEnemy;
 };
 
@@ -93,7 +94,7 @@ GAME.Utils.NewLevel = function() {
 		for(var j = 0; j < GAME.Config.enemyWidth; j++) {
 			var posX = j*(GAME.enemy.width+10)+diff,
 				posY = i*(GAME.enemy.height+10)+GAME.state.borderTop;
-			GAME.ENEMIES[enemyCounter] = GAME.Utils.NewEnemy(posX, posY, 0); /* i */
+			GAME.ENEMIES[enemyCounter] = GAME.Utils.NewEnemy(posX, posY, i); /*i=>0*/
 			enemyCounter++;
 		}
 	}
@@ -140,7 +141,8 @@ GAME.CollisionDetection.CheckAll = function() {
 						enemy.change('img/explosion.png', 30, 30, 0, 3);
 						enemy.speed(5).animation(0).frame(0).zone(30,30,0,0);
 						enemy.hit = false;
-						GAME.state.points += GAME.Config.pointsDiff;
+						GAME.state.points += GAME.Config.pointsDiff[enemy.type];
+						console.log('++'+GAME.Config.pointsDiff[enemy.type]);
 						GAME.$id('points').innerHTML = GAME.state.points;
 						enemy.callback(function(){
 							enemy.top = -enemy.height;

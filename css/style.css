@@ -34,22 +34,27 @@ ul { list-style-type: none; }
 #menu-rocket { width: 175px; height: 170px; background: url(../img/rocket.jpg) no-repeat; position: absolute; bottom: 10px; right: 90px; }
 
 #howTo { background: #f5f5f5 url(../img/howtoplay.jpg) no-repeat; color: #666; z-index: 9; position: relative; }
-#howTo p { background: #fff; color: #0c7a8b; font-size: 14px; position: absolute; padding: 2px 4px 0px 4px; border: 1px solid #0c7a8b; border-radius: 5px; }
-#howTo p.meteor { top: 70px; left: 20px; }
-#howTo p.satellite { top: 40px; right: 240px; }
-#howTo p.balloon { top: 100px; left: 215px; }
-#howTo p.bird { top: 190px; left: 200px; }
-#howTo p.plane { top: 180px; right: 170px; }
-#howTo p.height { bottom: 55px; left: 40px; }
-#howTo p.speed { bottom: 50px; right: 50px; }
-#howTo p.rocket { bottom: 115px; left: 480px; }
-#about { background: #f5f5f5; color: #666; text-align: center; text-shadow: 1px 1px 1px #fff; z-index: 8; }
+#howTo p { background: #4f3f3f; color: #eee; font-size: 12px; position: absolute; padding: 7px 10px; border-radius: 10px; }
+#howTo p.points { top: 50px; left: 20px; width: 200px; }
+#howTo p.level { top: 65px; left: 280px; width: 150px; }
+#howTo p.lives { top: 70px; right: 50px; width: 120px; }
+#howTo p.alien1 { top: 250px; left: 330px; width: 65px; }
+#howTo p.alien2 { top: 180px; left: 340px; width: 125px; }
+#howTo p.alien3 { top: 190px; right: 460px; width: 65px; }
+#howTo p.player { bottom: 10px; right: 405px; width: 265px; }
+#howTo p.controls { bottom: 10px; right: 10px; width: 165px; font-size: 10px; background: #4f3f3f url(../img/keys.jpg) 10px 29px no-repeat; padding-left: 55px; line-height: 20px; text-align: right; }
+#howTo p.controls span { display: block; }
+#howTo p.controls strong { font-size: 14px; }
+
+#about { background: #f5f5f5; color: #666; text-align: center; text-shadow: 1px 1px 1px #fff; z-index: 8; line-height: 17px; }
 #about p { margin-top: 0px; }
-#about p a { color: #888; text-decoration: none; font-weight: bold; }
-#about h2 { margin: 10px 0 5px 0; text-shadow: 1px 1px 1px #ccc; }
-#about h3 { margin-top: 10px; text-shadow: 1px 1px 1px #ccc; }
-#howTo span, #about span { display: inline-block; cursor: pointer; background: #aaa; color: #fff; text-transform: uppercase; font-size: 12px; padding: 15px; border: 1px solid #ccc; border-radius: 0px 10px 10px 0px; position: absolute; top: 150px; left: 0px; text-shadow: 1px 1px 1px #000; }
-#howTo span:hover, #about span:hover { background: #B1503D; color: #fff; }
+#about p a { color: #ac4b38; text-decoration: none; }
+#about p a:hover { text-decoration: underline; }
+#about h2 { margin: 10px 0 5px 0; text-shadow: 1px 1px 1px #ccc; color: #4f3f3f; }
+#about h3 { margin-top: 10px; text-shadow: 1px 1px 1px #ccc; color: #4f3f3f; }
+#howTo > span, #about > span { display: inline-block; cursor: pointer; color: #4f3f3f; text-transform: uppercase; font-size: 8px; position: absolute; top: 150px; left: 5px; line-height: 40px; font-weight: bold; }
+#howTo > span > span, #about > span > span { display: inline-block; font-size: 40px; line-height: 34px; font-weight: normal; width: 40px; height: 40px; background: #4f3f3f; color: #e1dfff; border-radius: 40px; padding-right: 3px; float: left; text-align: center; margin-right: 10px; }
+#howTo > span:hover, #about > span:hover { text-decoration: underline; }
 
 #message { width: 100%; height: 100%; z-index: 5; position: relative; }
 #message .box { position: absolute; top: 100px; left: 150px; z-index: 6; width: 400px; height: 200px; background: #e3e1e1; }

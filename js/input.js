@@ -37,7 +37,7 @@ GAME.Input.prototype = {
 			case GAME.Config.input.PAUSE: {
 				if(GAME.Config.active) {
 					GAME.Config.active = false;
-					GAME.Utils.Alert(GAME.Lang[GAME.state.lang].pausedTitle, GAME.Lang[GAME.state.lang].pausedText, 'pause');
+					GAME.Utils.Alert(GAME.Lang[GAME.state.lang].pausedTitle,GAME.Lang[GAME.state.lang].pausedText,'pause');
 					Mibbu.off();
 				} else {
 					GAME.Config.active = true;
@@ -52,7 +52,6 @@ GAME.Input.prototype = {
 			case GAME.Config.input.SHOOT: {
 				if(GAME.Config.active) {
 					this.pressed.shoot = true;
-					//this.held.shoot = true;
 				}
 				break;
 			}
@@ -79,11 +78,7 @@ GAME.Input.prototype = {
 			case GAME.Config.input.RIGHT: {
 				this.held.right = false;
 				break;
-			}/*
-			case GAME.Config.input.SHOOT: {
-				this.held.shoot = false;
-				break;
-			}*/
+			}
 			default: { return; }
 		}
 		return false;

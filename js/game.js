@@ -78,6 +78,7 @@ GAME.Start = function(preload) {
 
 	GAME.Utils.NewLevel();
 	GAME.Config.active = true;
+	GAME.Config.pointsDiff = [50,75,100];
 	Mibbu.on();
 
 	var gameLoop = function(){
@@ -98,7 +99,7 @@ GAME.Start = function(preload) {
 		}
 
 		/* ENEMY MOVEMENT */
-		if(!(GAME.state.frameCount % (30-4*(GAME.state.level-1)))){ // workaround - fix this!
+		if(!(GAME.state.frameCount % (30-2*(GAME.state.level-1)))){ // ugly workaround - fix this!
 			var offScreenRight = false,
 				offScreenLeft = false;
 			for(var i = 0; i < GAME.ENEMIES.length; i++) {
@@ -118,7 +119,7 @@ GAME.Start = function(preload) {
 					GAME.Config.active = false;
 					Mibbu.off();
 					GAME.Utils.NewLevel();
-					GAME.Utils.Alert(GAME.Lang[GAME.state.lang].killedText, GAME.Lang[GAME.state.lang].killedTitle, 'killed');
+					GAME.Utils.Alert(GAME.Lang[GAME.state.lang].killedText,GAME.Lang[GAME.state.lang].killedTitle,'killed');
 				}
 			}
 			if(offScreenLeft || offScreenRight) {
