@@ -9,13 +9,13 @@ ul { list-style-type: none; }
 #statbar > div { background: url(../img/panel.png) 0px 0px no-repeat; width: 80px; height: 48px; position: absolute; }
 #statbar > div span { color: #484646; font-size: 14px; }
 #statbar #statbar-left { background-position: 0px 0px; top: 0; left: 15px; text-align: left; }
-#statbar #statbar-left p { margin: 11px 0 0 18px; }
+#statbar #statbar-left p { margin: 10px 0 0 18px; }
 #statbar #statbar-left span { padding: 1px 0 0 30px; letter-spacing: 1px; }
 #statbar #statbar-center { background-position: 0px -48px; position: relative; margin: 0 auto; text-align: center; }
 #statbar #statbar-center p { padding: 3px 0 0 0; }
 #statbar #statbar-center span { position: absolute; top: 18px; left: 0; width: 80px; color: #fff; font: normal 12px Verdana; text-shadow: 1px 1px 1px #484646; }
 #statbar #statbar-right { background-position: 0px -96px; top: 0; right: 15px; text-align: right; }
-#statbar #statbar-right p { margin: 11px 20px 0 0; }
+#statbar #statbar-right p { margin: 12px 20px 0 0; }
 #statbar #statbar-right ul { position: absolute; top: 12px; left: -50px; }
 #statbar #statbar-right ul li { display: inline-block; width: 15px; height: 11px; background: url(../img/life.jpg) no-repeat; text-indent: 5000px; overflow: hidden; }
 

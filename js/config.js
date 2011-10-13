@@ -21,16 +21,15 @@ GAME.Config = {
 };
 
 GAME.Lang = [];
-GAME.Lang['pl'] = { /* L8R */ };
+GAME.Lang['pl'] = { /* later */ };
 GAME.Lang['en'] = {
 	pausedTitle: "PAUSED",
 	pausedText: "Press <strong>spacebar</strong> again to get back to the game.<br />You can also return to the <a href=''>main menu</a>.",
-	nextLevelTitle: "Next level!",
-	nextLevelText: "Congratulations, You killed all of the al_IE_ns and reached next level!Press spacebar to continue!",
+	nextLevelTitle: "NEXT LEVEL",
+	nextLevelText: "Congratulations, You've killed all of the aliens!<br />Press <strong>spacebar</strong> to continue!",
 	repeatLevelTitle: "Oh noes!",
 	repeatLevelText: "You were killed by the al_IE_ns!Press spacebar to continue!",
 	congratulations: "Congratulations, you've got <span>#</span> points!",
-	gameOver: "GAME OVER!",
 	tryAgain: "<a href=''>Try again?</a>",
 	killedTitle: "Player KILLED! ;(",
 	killedText: "Player KILLED! ;(",

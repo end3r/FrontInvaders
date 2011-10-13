@@ -1,7 +1,5 @@
 GAME.Utils = {};
-
 GAME.$id = function(id) { return document.getElementById(id); };
-GAME.$tag = function(tag, container) { return (container || document).getElementsByTagName(tag)[0]; };
 
 GAME.Utils.Alert = function(title, message, id) {
 	var div = GAME.$id('message'),
@@ -15,26 +13,6 @@ GAME.Utils.Alert = function(title, message, id) {
 	else { // hide
 		div.style.zIndex = '5';
 	}
-};
-
-GAME.Utils.GameOver = function(what) {
-	var msg = '',
-		score = parseFloat(GAME.Config.height).toFixed(1),
-		defaultMsg = '<p>'+(GAME.Lang[GAME.state.lang].congratulations).replace('#',score)+'</p>';
-
-	switch(what) {
-		case 'player': {
-			msg = 'OMGZORD Y U NO AVOID ENEMY?';
-			break;
-		}
-		case 'enemy': {
-			msg = 'OMGZORD Y U NO AVOID BULLET?';
-			break;
-		}
-		default: { msg = defaultMsg; }
-	}
-	Mibbu.off();
-	GAME.Utils.Alert(GAME.Lang[GAME.state.lang].gameOver, msg+GAME.Lang[GAME.state.lang].tryAgain);
 };
 
 GAME.Utils.NewBullet = function() {
@@ -60,7 +38,6 @@ GAME.Utils.NewEnemy = function(posX, posY, type) {
 	newEnemy.animation(type%3);
 	newEnemy.position(posX, posY, 2).speed(30);
 	newEnemy.movement = 0;
-	//newEnemy.hit = (type%2) ? true : false;
 	newEnemy.hit = true;
 	newEnemy.width = GAME.enemy.width;
 	newEnemy.height = GAME.enemy.height;
@@ -75,17 +52,28 @@ GAME.Utils.LinkBackToMenu = function(id) {
 		GAME.$id(id).style.zIndex = '5';
 	};
 };
-/*
-GAME.Utils.PlusMinus = function() {
-	return (~~(Math.random()*2)*2)-1;
-};
-*/
+
 GAME.Utils.NewLevel = function() {
+
+	GAME.enemy.deadline = 0;
+
 	var diff = parseInt((GAME.background.width-(GAME.Config.enemyWidth*(GAME.enemy.width+10)))/2),
 		enemyCounter = 0;
 
 	GAME.player.position(~~((GAME.background.width-GAME.player.width)/2),
 		GAME.background.height-GAME.player.height-GAME.state.borderBottom, 5).speed(0);
+	if(GAME.BULLETS) {
+		for(var i=0; i<GAME.BULLETS.length; i++) {
+			GAME.BULLETS[i].top = -50;
+			GAME.BULLETS[i].position(200,-50);
+		}
+	}
+	if(GAME.ENEMIES) {
+		for(var i=0; i<GAME.ENEMIES.length; i++) {
+			GAME.ENEMIES[i].top = -50;
+			GAME.ENEMIES[i].position(200,-50);
+		}
+	}
 	GAME.BULLETS = [];
 	GAME.ENEMIES = [];
 	var heightLimit = 5;
@@ -100,6 +88,20 @@ GAME.Utils.NewLevel = function() {
 		}
 	}
 	GAME.$id('level').innerHTML = GAME.state.level;
+};
+
+GAME.Utils.RemoveLife = function() {
+	GAME.player.lives--;
+	if(GAME.player.lives) {
+		var livesHTML = '';
+		for(var l=0; l<GAME.player.lives; l++) {
+			livesHTML += '<li>|</li>';
+		}
+		GAME.$id('lives').innerHTML = livesHTML;	
+	}
+	else {
+		alert('GAME OVER!');
+	}
 };
 
 /* Collision Detection */
@@ -143,12 +145,12 @@ GAME.CollisionDetection.CheckAll = function() {
 						enemy.speed(5).animation(0).frame(0).zone(30,30,0,0);
 						enemy.hit = false;
 						GAME.state.points += GAME.Config.pointsDiff[enemy.type];
-						console.log('++'+GAME.Config.pointsDiff[enemy.type]);
+						//console.log('++'+GAME.Config.pointsDiff[enemy.type]);
 						GAME.$id('points').innerHTML = GAME.state.points;
 						enemy.callback(function(){
 							enemy.top = -enemy.height;
 							enemy.position(enemy.position().x,enemy.top);
-							enemy.callback(function(){},1000);
+							//enemy.callback(function(){console.log('puff!');},1000);
 							if(!GAME.ENEMIES.length) {
 								GAME.state.level += 1;
 								GAME.Utils.NewLevel();
@@ -168,6 +170,7 @@ GAME.CollisionDetection.CheckAll = function() {
 								Mibbu.off();
 							}
 						}, 1);
+						GAME.ENEMIES[i] = enemy;
 					}
 					else {
 						enemyTab.push(GAME.ENEMIES[i]);

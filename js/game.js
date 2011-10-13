@@ -63,7 +63,6 @@ GAME.Start = function(preload) {
 
 	GAME.enemy.dirX = 7;
 	GAME.enemy.dirY = 0;
-	GAME.enemy.deadline = 0;
 
 	GAME.state = {};
 	GAME.state.frameCount = 0;
@@ -115,9 +114,8 @@ GAME.Start = function(preload) {
 				if(enemyBottomPosition > GAME.enemy.deadline) {
 					GAME.enemy.deadline = enemyBottomPosition;
 				}
-				if(GAME.enemy.deadline >= GAME.player.position().y) {
-					GAME.player.lives--;
-					GAME.$id('lives').innerHTML = GAME.player.lives;
+				if(GAME.enemy.deadline >= GAME.player.position().y+(GAME.enemy.height/2)) {
+					GAME.Utils.RemoveLife();
 					GAME.Config.active = false;
 					Mibbu.off();
 					GAME.Utils.NewLevel();
