@@ -1,16 +1,20 @@
 Front Invaders
 ========
 
-Simple HTML5 game made to promote Front Row Conference (20-21.10.2011 in Kraków, Poland).
+Simple HTML5 game build with the Mibbu microframework, made to promote Front Row - conference for the people, who want to shape the future of the web. Front Row Conf will take place in Kraków, Poland on 20-21 October 2011.
 
 ### Info ###
-[clone of the Space Invaders, your spaceship have the shape of the HTML5 logo and shoots to the IE6 logos]
+Take control over the HTML5 Rocket, and kill as many evil alien Explorers as You can. Stand up and fight, the Open Web needs You!
 
 ### Controls ###
-[arrows probably - think about touch events for mobile]
+Use left and right arrow keys to move Your Rocket, press up arrow or Z key to fire Your weapon, hit spacebar to pause the game.
 
 ### Authors ###
-**Andrzej Mazur** - coding
+
+**Andrzej Mazur** - coding,
+**Ewa Adach** - graphics
 
 ### Credits ###
-[Front Row Conf for initial gfx from the website]
+
+**Michał Budzyński** - author of the Mibbu microframework,
+**Front Row Conf** - website graphics used in the game
