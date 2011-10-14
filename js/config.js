@@ -21,19 +21,16 @@ GAME.Config = {
 };
 
 GAME.Lang = [];
-GAME.Lang['pl'] = { /* later */ };
+GAME.Lang['pl'] = { /* maybe later */ };
 GAME.Lang['en'] = {
 	pausedTitle: "PAUSED",
-	pausedText: "Press <strong>spacebar</strong> again to get back to the game.<br />You can also return to the <a href=''>main menu</a>.",
+	pausedText: "Press <strong>spacebar</strong> again to get back to the game!<br />You can also return to the <a href=''>main menu</a>.",
 	nextLevelTitle: "NEXT LEVEL",
 	nextLevelText: "Congratulations, You've killed all of the aliens!<br />Press <strong>spacebar</strong> to continue!",
-	repeatLevelTitle: "Oh noes!",
-	repeatLevelText: "You were killed by the al_IE_ns!Press spacebar to continue!",
-	congratulations: "Congratulations, you've got <span>#</span> points!",
-	tryAgain: "<a href=''>Try again?</a>",
-	killedTitle: "Player KILLED! ;(",
-	killedText: "Player KILLED! ;(",
-	unlocked: "You've reached level 5 and unlocked new rocket!",
-	winTitle: "We have a winner!",
-	winText: "You've reached level 10 and won the game! Who's awesome? You're awesome!"
+	killedTitle: "PLAYER KILLED",
+	killedText: "You were killed by the aliens! Press <strong>spacebar</strong> to repeat the level!",
+	unlockedTitle: "NEW ROCKET",
+	unlockedText: "You've reached level X and unlocked new rocket!<br />Press <strong>spacebar</strong> to continue!",
+	endTitle: "CONGRATULATIONS",
+	endText: "You've scored X points! Who's awesome? You're awesome!"
 };

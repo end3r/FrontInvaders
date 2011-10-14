@@ -100,7 +100,7 @@ GAME.Input.prototype = {
 			if(this.pressed.shoot) {
 				this.pressed.shoot = false;
 				if(GAME.BULLETS.length < GAME.Config.bulletLimit) {
-					GAME.BULLETS.push(GAME.Utils.NewBullet());
+					GAME.BULLETS[GAME.BULLETS.length] = GAME.Utils.ActivateBullet();
 				}
 			}
 		}

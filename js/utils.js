@@ -16,21 +16,35 @@ GAME.Utils.Alert = function(title, message, id) {
 };
 
 GAME.Utils.NewBullet = function() {
-	var posX = GAME.player.position().x + parseInt(GAME.player.width/2)-1,
-		posY = GAME.player.position().y;
+	//var posX = GAME.player.position().x + parseInt(GAME.player.width/2)-1,
+	//	posY = GAME.player.position().y;
 	var newBullet = new Mibbu.spr('img/bullet.png', 2, 4, 0, 0);
 	newBullet.width = 2;
 	newBullet.height = 4;
-	newBullet.left = posX;
-	newBullet.top = posY;
-	newBullet.hit = true;
-	newBullet.position(posX, posY, 2).speed(0);
-	for(var e=0; e<GAME.ENEMIES.length; e++) {
-		GAME.CollisionDetection.Add(newBullet, GAME.ENEMIES[e]);
-	}
+	//newBullet.left = posX;
+	//newBullet.top = posY;
+	newBullet.hit = false;
+	//newBullet.active = false;
+	newBullet.speed(0);
+	//newBullet.position(posX, posY, 2);
+	newBullet.position(-50, -50, 2);
+	return newBullet;
+};
+
+GAME.Utils.ActivateBullet = function() {
+	var bullet = GAME.inactive.BULLETS.shift();
+	var posX = GAME.player.position().x + parseInt(GAME.player.width/2)-1,
+		posY = GAME.player.position().y;
+	bullet.left = posX;
+	bullet.top = posY;
+	bullet.position(posX, posY, 2).speed(0);
+	bullet.hit = true;
 	GAME.state.points -= 10;
 	GAME.$id('points').innerHTML = GAME.state.points;
-	return newBullet;
+	for(var e=0; e<GAME.ENEMIES.length; e++) {
+		GAME.CollisionDetection.Add(bullet, GAME.ENEMIES[e]);
+	}
+	return bullet;
 };
 
 GAME.Utils.NewEnemy = function(posX, posY, type) {
@@ -62,19 +76,24 @@ GAME.Utils.NewLevel = function() {
 
 	GAME.player.position(~~((GAME.background.width-GAME.player.width)/2),
 		GAME.background.height-GAME.player.height-GAME.state.borderBottom, 5).speed(0);
-	if(GAME.BULLETS) {
+	if(GAME.BULLETS.length) {
 		for(var i=0; i<GAME.BULLETS.length; i++) {
 			GAME.BULLETS[i].top = -50;
-			GAME.BULLETS[i].position(200,-50);
+			GAME.BULLETS[i].left = -50;
+			GAME.BULLETS[i].position(-50,-50);
+			GAME.inactive.BULLETS.push(GAME.BULLETS[i]);
+			//GAME.BULLETS.splice(i,1);
 		}
+		GAME.BULLETS = [];
 	}
+
 	if(GAME.ENEMIES) {
 		for(var i=0; i<GAME.ENEMIES.length; i++) {
 			GAME.ENEMIES[i].top = -50;
 			GAME.ENEMIES[i].position(200,-50);
 		}
 	}
-	GAME.BULLETS = [];
+	//GAME.BULLETS = [];
 	GAME.ENEMIES = [];
 	var heightLimit = 5;
 	GAME.Config.enemyHeight = (GAME.state.level%heightLimit) ? (GAME.state.level%heightLimit) : heightLimit;
@@ -130,9 +149,11 @@ GAME.CollisionDetection.CheckAll = function() {
 			if( !( (o1_Top <= o2_Top) || (o1_Bottom >= o2_Bottom)
 				|| (o1_Left <= o2_Left) || (o1_Right >= o2_Right) ) && obj1.hit && obj2.hit ) {
 				for(var i=0; i<GAME.BULLETS.length; i++) {
-					if(GAME.BULLETS[i].id() == obj1.id()) {
+					if(GAME.BULLETS[i].id() == obj1.id()) { // if the bullet hits the enemy, hide it
 						GAME.BULLETS[i].top = -50;
-						GAME.BULLETS[i].position(200,-50);
+						GAME.BULLETS[i].left = -50;
+						GAME.BULLETS[i].position(-50,-50);
+						GAME.inactive.BULLETS.push(GAME.BULLETS[i]);
 						GAME.BULLETS.splice(i,1);
 					}
 				}
@@ -154,18 +175,18 @@ GAME.CollisionDetection.CheckAll = function() {
 							if(!GAME.ENEMIES.length) {
 								GAME.state.level += 1;
 								GAME.Utils.NewLevel();
-								var unlock = '';
-								if(GAME.player.level == 5) {
-									unlock = GAME.Lang[GAME.state.lang].unlocked;
+								//var unlock = '';
+								if(GAME.state.level == 5) {
 									var anim = GAME.player.animation();
 									GAME.player.animation((anim += 1) % 2);
+									GAME.Utils.Alert(GAME.Lang[GAME.state.lang].unlockedTitle, GAME.Lang[GAME.state.lang].unlockedText, 'unlocked');
 								}
-								if(GAME.player.level == 10) {
-									GAME.Utils.Alert(GAME.Lang[GAME.state.lang].winTitle, GAME.Lang[GAME.state.lang].winText);
-									GAME.Config.active = false;
-									Mibbu.off();
+								else if(GAME.state.level == 10) {
+									GAME.Utils.Alert(GAME.Lang[GAME.state.lang].winTitle, GAME.Lang[GAME.state.lang].winText, 'win');
 								}
-								GAME.Utils.Alert(GAME.Lang[GAME.state.lang].nextLevelTitle, GAME.Lang[GAME.state.lang].nextLevelText+unlock, 'nextlevel');
+								else {
+									GAME.Utils.Alert(GAME.Lang[GAME.state.lang].nextLevelTitle, GAME.Lang[GAME.state.lang].nextLevelText, 'nextlevel');
+								}
 								GAME.Config.active = false;
 								Mibbu.off();
 							}

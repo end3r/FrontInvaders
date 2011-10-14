@@ -6,7 +6,6 @@ GAME.Init = function() {
 	var preload = {};
 	preload.player = new Mibbu.spr('img/player.png', 40, 40, 0, 1),
 	preload.enemy = new Mibbu.spr('img/enemies.png', 30, 30, 1, 2),
-	//preload.bullet = new Mibbu.spr('img/bullet.png', 2, 4, 1, 0),
 	preload.explosion = new Mibbu.spr('img/explosion.png', 30, 120, 0, 3),
 	preload.background = new Mibbu.bg('img/bg.jpg', 6, 90, {x:0,y:0});
 
@@ -66,7 +65,7 @@ GAME.Start = function(preload) {
 
 	GAME.state = {};
 	GAME.state.frameCount = 0;
-	GAME.state.level = 1;
+	GAME.state.level = 3;
 	GAME.state.points = 0;
 	GAME.state.borderTop = 80;
 	GAME.state.borderBottom = 15;
@@ -75,9 +74,20 @@ GAME.Start = function(preload) {
 	GAME.player.lives = 3;
 	GAME.player.hit = true;
 
+	GAME.BULLETS = [];
 	GAME.Utils.NewLevel();
 	GAME.Config.active = true;
 	GAME.Config.pointsDiff = [50,75,100];
+
+	// strict number of reusable elements to speed up with performance
+
+	GAME.inactive = {};
+	GAME.inactive.BULLETS = [];
+	for(var b = 0; b<GAME.Config.bulletLimit; b++) {
+		GAME.inactive.BULLETS[b] = GAME.Utils.NewBullet();
+	}
+	//GAME.ENEMIES = [];
+
 	Mibbu.on();
 
 	var gameLoop = function(){
@@ -88,6 +98,10 @@ GAME.Start = function(preload) {
 			for(var b=0; b<GAME.BULLETS.length; b++) {
 				var newY = GAME.BULLETS[b].position().y - GAME.Config.bulletSpeed;
 				if(newY <= 40) {
+					GAME.BULLETS[b].top = -50;
+					GAME.BULLETS[b].left = -50;
+					GAME.BULLETS[b].position(-50,-50);
+					GAME.inactive.BULLETS.push(GAME.BULLETS[b]);
 					GAME.BULLETS.splice(b,1);
 				}
 				else {
@@ -119,7 +133,7 @@ GAME.Start = function(preload) {
 					GAME.Config.active = false;
 					Mibbu.off();
 					GAME.Utils.NewLevel();
-					GAME.Utils.Alert(GAME.Lang[GAME.state.lang].killedText,GAME.Lang[GAME.state.lang].killedTitle,'killed');
+					GAME.Utils.Alert(GAME.Lang[GAME.state.lang].killedTitle,GAME.Lang[GAME.state.lang].killedText,'killed');
 				}
 			}
 			if(offScreenLeft || offScreenRight) {
