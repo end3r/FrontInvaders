@@ -16,17 +16,11 @@ GAME.Utils.Alert = function(title, message, id) {
 };
 
 GAME.Utils.NewBullet = function() {
-	//var posX = GAME.player.position().x + parseInt(GAME.player.width/2)-1,
-	//	posY = GAME.player.position().y;
 	var newBullet = new Mibbu.spr('img/bullet.png', 2, 4, 0, 0);
 	newBullet.width = 2;
 	newBullet.height = 4;
-	//newBullet.left = posX;
-	//newBullet.top = posY;
 	newBullet.hit = false;
-	//newBullet.active = false;
 	newBullet.speed(0);
-	//newBullet.position(posX, posY, 2);
 	newBullet.position(-50, -50, 2);
 	return newBullet;
 };
@@ -47,19 +41,28 @@ GAME.Utils.ActivateBullet = function() {
 	return bullet;
 };
 
-GAME.Utils.NewEnemy = function(posX, posY, type) {
+GAME.Utils.NewEnemy = function() {
 	var newEnemy = new Mibbu.spr('img/enemies.png', GAME.enemy.width, GAME.enemy.height, 1, 2);
-	newEnemy.animation(type%3);
-	newEnemy.position(posX, posY, 2).speed(30);
+	newEnemy.position(-150, -150, 2);
 	newEnemy.movement = 0;
-	newEnemy.hit = true;
+	newEnemy.hit = false;
 	newEnemy.width = GAME.enemy.width;
 	newEnemy.height = GAME.enemy.height;
-	newEnemy.left = posX;
-	newEnemy.top = posY;
-	newEnemy.type = type%3;
 	return newEnemy;
 };
+
+GAME.Utils.ActivateEnemy = function(posX, posY, type) {
+	var enemy = GAME.inactive.ENEMIES.shift();
+	enemy.change('img/enemies.png', GAME.enemy.width, GAME.enemy.height, 1, 2);
+	enemy.animation(type);
+	enemy.speed(GAME.__enemySpeed);
+	enemy.type = type;
+	enemy.left = posX;
+	enemy.top = posY;
+	enemy.position(posX, posY, 2);
+	enemy.hit = true;
+	return enemy;
+}
 
 GAME.Utils.LinkBackToMenu = function(id) {
 	GAME.$id(id).onclick = function() {
@@ -68,7 +71,6 @@ GAME.Utils.LinkBackToMenu = function(id) {
 };
 
 GAME.Utils.NewLevel = function() {
-
 	GAME.enemy.deadline = 0;
 
 	var diff = parseInt((GAME.background.width-(GAME.Config.enemyWidth*(GAME.enemy.width+10)))/2),
@@ -82,18 +84,17 @@ GAME.Utils.NewLevel = function() {
 			GAME.BULLETS[i].left = -50;
 			GAME.BULLETS[i].position(-50,-50);
 			GAME.inactive.BULLETS.push(GAME.BULLETS[i]);
-			//GAME.BULLETS.splice(i,1);
 		}
 		GAME.BULLETS = [];
 	}
-
-	if(GAME.ENEMIES) {
+	if(GAME.ENEMIES.length) {
 		for(var i=0; i<GAME.ENEMIES.length; i++) {
-			GAME.ENEMIES[i].top = -50;
-			GAME.ENEMIES[i].position(200,-50);
+			GAME.ENEMIES[i].top = -150;
+			GAME.ENEMIES[i].left = -150;
+			GAME.ENEMIES[i].position(-150,-150);
+			GAME.inactive.ENEMIES.push(GAME.ENEMIES[i]);
 		}
 	}
-	//GAME.BULLETS = [];
 	GAME.ENEMIES = [];
 	var heightLimit = 5;
 	GAME.Config.enemyHeight = (GAME.state.level%heightLimit) ? (GAME.state.level%heightLimit) : heightLimit;
@@ -102,11 +103,13 @@ GAME.Utils.NewLevel = function() {
 		for(var j = 0; j < GAME.Config.enemyWidth; j++) {
 			var posX = j*(GAME.enemy.width+10)+diff,
 				posY = i*(GAME.enemy.height+10)+GAME.state.borderTop;
-			GAME.ENEMIES[enemyCounter] = GAME.Utils.NewEnemy(posX, posY, i); /*i=>0*/
+			var type = GAME.Config.types[GAME.state.level-1][i];
+			GAME.ENEMIES[enemyCounter] = GAME.Utils.ActivateEnemy(posX, posY, type); /*i=>0*/
 			enemyCounter++;
 		}
 	}
 	GAME.$id('level').innerHTML = GAME.state.level;
+	GAME.__enemySpeed -= 5;
 };
 
 GAME.Utils.RemoveLife = function() {
@@ -165,6 +168,7 @@ GAME.CollisionDetection.CheckAll = function() {
 						enemy.change('img/explosion.png', 30, 30, 0, 3);
 						enemy.speed(5).animation(0).frame(0).zone(30,30,0,0);
 						enemy.hit = false;
+						GAME.inactive.ENEMIES.push(enemy);
 						GAME.state.points += GAME.Config.pointsDiff[enemy.type];
 						//console.log('++'+GAME.Config.pointsDiff[enemy.type]);
 						GAME.$id('points').innerHTML = GAME.state.points;
@@ -172,17 +176,15 @@ GAME.CollisionDetection.CheckAll = function() {
 							enemy.top = -enemy.height;
 							enemy.position(enemy.position().x,enemy.top);
 							//enemy.callback(function(){console.log('puff!');},1000);
+							GAME.ENEMIES.splice(i,1);
 							if(!GAME.ENEMIES.length) {
 								GAME.state.level += 1;
 								GAME.Utils.NewLevel();
 								//var unlock = '';
-								if(GAME.state.level == 5) {
+								if(GAME.state.level == 10) {
 									var anim = GAME.player.animation();
 									GAME.player.animation((anim += 1) % 2);
 									GAME.Utils.Alert(GAME.Lang[GAME.state.lang].unlockedTitle, GAME.Lang[GAME.state.lang].unlockedText, 'unlocked');
-								}
-								else if(GAME.state.level == 10) {
-									GAME.Utils.Alert(GAME.Lang[GAME.state.lang].winTitle, GAME.Lang[GAME.state.lang].winText, 'win');
 								}
 								else {
 									GAME.Utils.Alert(GAME.Lang[GAME.state.lang].nextLevelTitle, GAME.Lang[GAME.state.lang].nextLevelText, 'nextlevel');

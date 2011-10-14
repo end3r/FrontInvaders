@@ -65,7 +65,7 @@ GAME.Start = function(preload) {
 
 	GAME.state = {};
 	GAME.state.frameCount = 0;
-	GAME.state.level = 3;
+	GAME.state.level = 1;
 	GAME.state.points = 0;
 	GAME.state.borderTop = 80;
 	GAME.state.borderBottom = 15;
@@ -75,19 +75,42 @@ GAME.Start = function(preload) {
 	GAME.player.hit = true;
 
 	GAME.BULLETS = [];
-	GAME.Utils.NewLevel();
+	GAME.ENEMIES = [];
 	GAME.Config.active = true;
-	GAME.Config.pointsDiff = [50,75,100];
+	GAME.Config.pointsDiff = [50,70,100];
+	GAME.Config.types = [
+		[0],
+		[0],
+		[0,0],
+		[0,0],
+		[1,0,0],
+		[1,0,0],
+		[1,1,0,0],
+		[1,1,0,0],
+		[2,1,1,0,0],
+		[2,1,1,0,0],
+		[2,2,1,1,0,0],
+		[2,2,1,1,0,0]
+	];
 
 	// strict number of reusable elements to speed up with performance
+
+	GAME.__enemySpeed = 30;
 
 	GAME.inactive = {};
 	GAME.inactive.BULLETS = [];
 	for(var b = 0; b<GAME.Config.bulletLimit; b++) {
 		GAME.inactive.BULLETS[b] = GAME.Utils.NewBullet();
 	}
-	//GAME.ENEMIES = [];
 
+	GAME.Config.enemyLimit = 100;
+
+	GAME.inactive.ENEMIES = [];
+	for(var e = 0; e<GAME.Config.enemyLimit; e++) {
+		GAME.inactive.ENEMIES[e] = GAME.Utils.NewEnemy();
+	}
+
+	GAME.Utils.NewLevel();
 	Mibbu.on();
 
 	var gameLoop = function(){
@@ -112,9 +135,9 @@ GAME.Start = function(preload) {
 		}
 
 		/* ENEMY MOVEMENT */
-		var speedLimit = 10;
-		var enemySpeed = (30-2*(GAME.state.level-1)) < speedLimit ? (30-2*(GAME.state.level-1)) : speedLimit;
-		if(!(GAME.state.frameCount % enemySpeed)){ // ugly workaround - fix this!
+		//var speedLimit = 10;
+		//GAME.__enemySpeed = (30-2*(GAME.state.level-1)) < speedLimit ? (30-2*(GAME.state.level-1)) : speedLimit;
+		if(!(GAME.state.frameCount % GAME.__enemySpeed)){ // ugly workaround - fix this!
 			var offScreenRight = false,
 				offScreenLeft = false;
 			for(var i = 0; i < GAME.ENEMIES.length; i++) {
