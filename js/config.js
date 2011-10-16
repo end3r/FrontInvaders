@@ -28,9 +28,9 @@ GAME.Lang['en'] = {
 	nextLevelTitle: "NEXT LEVEL",
 	nextLevelText: "Congratulations, You've killed all of the aliens!<br />Press <strong>spacebar</strong> to continue!",
 	killedTitle: "PLAYER KILLED",
-	killedText: "You were killed by the aliens! Press <strong>spacebar</strong> to repeat the level!",
+	killedText: "You were killed by the aliens!<br />Press <strong>spacebar</strong> to repeat the level!",
 	unlockedTitle: "NEW ROCKET",
-	unlockedText: "You've reached level X and unlocked new rocket!<br />Press <strong>spacebar</strong> to continue!",
-	endTitle: "CONGRATULATIONS",
-	endText: "You've scored X points! Who's awesome? You're awesome!"
+	unlockedText: "You've reached level 10 and unlocked new rocket!<br />Press <strong>spacebar</strong> to continue!",
+	winTitle: "CONGRATULATIONS",
+	winText: "You've scored <strong>sss</strong> points! You're awesome!<br />You can <a href=''>try again</a> or share Your score on <strong><a href='http://twitter.com/intent/tweet?text=I%20saved%20the%20world%20by%20killing%20evil%20explorers%20in%20this%20HTML5%20game,%20Front%20Invaders,%20and%20scored%20sss%20points!%20Try%20it%20too%20http://end3r.com/games/frontinvaders/'>Twitter</a></strong>!"
 };

@@ -6,7 +6,7 @@ GAME.Init = function() {
 	var preload = {};
 	preload.player = new Mibbu.spr('img/player.png', 40, 40, 0, 1),
 	preload.enemy = new Mibbu.spr('img/enemies.png', 30, 30, 1, 2),
-	preload.explosion = new Mibbu.spr('img/explosion.png', 30, 120, 0, 3),
+	preload.explosion = new Mibbu.spr('img/explosion.png', 30, 30, 0, 3),
 	preload.background = new Mibbu.bg('img/bg.jpg', 6, 90, {x:0,y:0});
 
 	GAME.keyboard = new GAME.Input();
@@ -93,23 +93,13 @@ GAME.Start = function(preload) {
 		[2,2,1,1,0,0]
 	];
 
-	// strict number of reusable elements to speed up with performance
-
-	GAME.__enemySpeed = 30;
-
+	GAME.enemy.speed = 30;
 	GAME.inactive = {};
 	GAME.inactive.BULLETS = [];
 	for(var b = 0; b<GAME.Config.bulletLimit; b++) {
 		GAME.inactive.BULLETS[b] = GAME.Utils.NewBullet();
 	}
-
-	GAME.Config.enemyLimit = 100;
-
 	GAME.inactive.ENEMIES = [];
-	for(var e = 0; e<GAME.Config.enemyLimit; e++) {
-		GAME.inactive.ENEMIES[e] = GAME.Utils.NewEnemy();
-	}
-
 	GAME.Utils.NewLevel();
 	Mibbu.on();
 
@@ -134,13 +124,12 @@ GAME.Start = function(preload) {
 			}
 		}
 
-		/* ENEMY MOVEMENT */
-		//var speedLimit = 10;
-		//GAME.__enemySpeed = (30-2*(GAME.state.level-1)) < speedLimit ? (30-2*(GAME.state.level-1)) : speedLimit;
-		if(!(GAME.state.frameCount % GAME.__enemySpeed)){ // ugly workaround - fix this!
+		/* enemy movement */
+		if(!(GAME.state.frameCount % GAME.enemy.speed)){
 			var offScreenRight = false,
 				offScreenLeft = false;
 			for(var i = 0; i < GAME.ENEMIES.length; i++) {
+			if(GAME.Config.active) {
 				if(GAME.ENEMIES[i].position().x > GAME.background.width-2*GAME.enemy.width) {
 					offScreenRight = true;
 				}
@@ -151,13 +140,12 @@ GAME.Start = function(preload) {
 				if(enemyBottomPosition > GAME.enemy.deadline) {
 					GAME.enemy.deadline = enemyBottomPosition;
 				}
-				if(GAME.enemy.deadline >= GAME.player.position().y+(GAME.enemy.height/2)) {
-					GAME.Utils.RemoveLife();
+				if(GAME.enemy.deadline >= GAME.player.position().y+(GAME.enemy.height/3)) {
 					GAME.Config.active = false;
 					Mibbu.off();
-					GAME.Utils.NewLevel();
-					GAME.Utils.Alert(GAME.Lang[GAME.state.lang].killedTitle,GAME.Lang[GAME.state.lang].killedText,'killed');
+					GAME.Utils.RemoveLife();
 				}
+			}
 			}
 			if(offScreenLeft || offScreenRight) {
 				GAME.enemy.dirX = -GAME.enemy.dirX;

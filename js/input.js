@@ -14,7 +14,6 @@ GAME.Input = function(){
 		}
 	};
 };
-
 GAME.Input.prototype = {
 	held: {},
 	pressed: {},

@@ -4,6 +4,7 @@ ul { list-style-type: none; }
 #container { width: 700px; height: 400px; margin: 0 auto; position: relative; }
 #container > div { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 #container #game { z-index: 2; }
+#container h1 { display: none; }
 
 #container div#statbar { z-index: 3; height: 48px; background: #f5f5f5; border-bottom: 1px solid #e5e2df; box-shadow: 0px 1px 1px -1px #fff; color: #fff; font: normal 12px Verdana; text-transform: uppercase; text-shadow: 1px 1px 1px #484646; }
 #statbar > div { background: url(../img/panel.png) 0px 0px no-repeat; width: 80px; height: 48px; position: absolute; }
@@ -32,6 +33,9 @@ ul { list-style-type: none; }
 #menu h3 { margin-top: 15px; font-size: 14px; }
 #menu-aliens { width: 180px; height: 160px; background: url(../img/aliens.jpg) no-repeat; position: absolute; top: 20px; left: 85px; }
 #menu-rocket { width: 175px; height: 170px; background: url(../img/rocket.jpg) no-repeat; position: absolute; bottom: 10px; right: 90px; }
+#menu-social { position: absolute; bottom: 5px; left: 10px; width: 150px; text-align: left; }
+#menu-social > * { display: block; clear: both; margin: 10px 5px; }
+#menu-social > span { padding-left: 2px; }
 
 #howTo { background: #f5f5f5 url(../img/howtoplay.jpg) no-repeat; color: #666; z-index: 9; position: relative; }
 #howTo p { background: #4f3f3f; color: #eee; font-size: 12px; position: absolute; padding: 7px 10px; border-radius: 10px; }
@@ -57,12 +61,14 @@ ul { list-style-type: none; }
 #howTo > span:hover, #about > span:hover { text-decoration: underline; }
 
 #message { width: 100%; height: 100%; z-index: 5; position: relative; }
-#message .box { position: absolute; top: 100px; left: 150px; z-index: 6; width: 400px; height: 200px; background: #e3e1e1; }
+#message .box { position: absolute; top: 100px; left: 150px; z-index: 6; width: 400px; height: 200px; background: #f5f5f5; }
 #message .box > div { position: relative; width: 100%; height: 100%; }
-#message .box > div span { position: absolute; display: block; width: 200px; height: 65px; bottom: 0px; right: 20px; background: url(../img/box-backgrounds.jpg) no-repeat; }
+#message .box > div span { position: absolute; display: block; width: 200px; height: 65px; bottom: 0px; right: 20px; background: url(../img/alerts.jpg) no-repeat; }
 #message .box > div span#box-killed { background-position: 0px 0px; }
 #message .box > div span#box-nextlevel { background-position: 0px -65px; }
 #message .box > div span#box-pause { background-position: 0px -130px; }
+#message .box > div span#box-newrocket { background-position: 0px -195px; }
+#message .box > div span#box-winner { background-position: 0px -260px; }
 #message .shadow { position: absolute; top: 0; left: 0; z-index: 3; width: 100%; height: 100%; background: #000; opacity: 0.5; }
 #message .box h4 { font: normal 24px Verdana; color: #484646; text-align: center; padding: 25px 0px; }
 #message .box p { line-height: 20px; font-size: 12px; padding: 0 40px; color: #585656; }
